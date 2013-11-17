@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Giosh94mhz\GeonamesBundle\Entity\Toponym" table="geoname">
+    <id name="id" type="integer" column="geoname_id">
+      <generator strategy="NONE"/>
+      <options><option name="unsigned">true</option></options>
+    </id>
+    <field name="name" type="string" column="name" length="200" nullable="false"/>
+    <field name="asciiName" type="string" column="ascii_name" length="200" nullable="false"/>
+    <field name="simpleAlternateNames" type="string_simple_array" column="alternate_names" length="4000" nullable="true"/>
+    <field name="latitude" type="float" column="latitude" precision="10" scale="7" nullable="true"/>
+    <field name="longitude" type="float" column="longitude" precision="10" scale="7" nullable="true"/>
+    <many-to-one field="feature" target-entity="Feature">
+       <join-columns>
+        <join-column name="feature_class" referenced-column-name="class" nullable="false"/>
+        <join-column name="feature_code" referenced-column-name="code" nullable="false"/>
+      </join-columns>
+    </many-to-one>
+    <field name="countryCode" type="string" column="country" length="2" nullable="true">
+      <options><option name="fixed">true</option></options>
+    </field>
+    <field name="alternateCountryCodes" type="string_simple_array" column="alternate_country_codes" length="60" nullable="true"/>
+    <field name="admin1Code" type="string" column="admin1" length="20" nullable="true"/>
+    <field name="admin2Code" type="string" column="admin2" length="80" nullable="true"/>
+    <field name="admin3Code" type="string" column="admin3" length="20" nullable="true"/>
+    <field name="admin4Code" type="string" column="admin4" length="20" nullable="true"/>
+    <field name="population" type="bigint" column="population" nullable="true"/>
+    <field name="elevation" type="integer" column="elevation" nullable="true"/>
+    <field name="gtopo30" type="integer" column="gtopo30" nullable="true"/>
+    <field name="timezone" type="string" column="timezone" length="40" nullable="true"/>
+    <field name="lastModify" type="date" column="moddate" nullable="false"/>
+
+    <one-to-many field="alternateNames" target-entity="AlternateName" mapped-by="toponym"/>
+    <one-to-many field="parents" target-entity="HierarchyLink" mapped-by="child"/>
+    <one-to-many field="children" target-entity="HierarchyLink" mapped-by="parent"/>
+
+    <indexes>
+        <index name="idx_name" columns="name"/>
+        <index name="idx_coordinates" columns="latitude,longitude"/>
+        <index name="idx_hierarchy" columns="country,admin1,admin2"/>
+    </indexes>
+
+  </entity>
+</doctrine-mapping>

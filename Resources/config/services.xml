@@ -1,0 +1,130 @@
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <!-- configuration -->
+        <parameter key="giosh94mhz_geonames.download.directory"/>
+
+        <parameter key="giosh94mhz_geonames.feature.locale"/>
+        <parameter key="giosh94mhz_geonames.feature.include" type="collection"/>
+        <parameter key="giosh94mhz_geonames.feature.exclude" type="collection"/>
+        <parameter key="giosh94mhz_geonames.feature.force_include" type="collection"/>
+
+        <parameter key="giosh94mhz_geonames.toponym.all"/>
+        <parameter key="giosh94mhz_geonames.toponym.cities"/>
+        <parameter key="giosh94mhz_geonames.toponym.countries" type="collection"/>
+        <parameter key="giosh94mhz_geonames.toponym.options.alternate_names"/>
+        <parameter key="giosh94mhz_geonames.toponym.options.alternate_country_codes"/>
+
+        <parameter key="giosh94mhz_geonames.continent.enabled"/>
+        <parameter key="giosh94mhz_geonames.country.enabled"/>
+        <parameter key="giosh94mhz_geonames.admin1.enabled"/>
+        <parameter key="giosh94mhz_geonames.admin2.enabled"/>
+        <parameter key="giosh94mhz_geonames.hierarchy.enabled"/>
+
+        <!-- internals -->
+        <parameter key="giosh94mhz_geonames.import.director.class">Giosh94mhz\GeonamesBundle\Import\ImportDirector</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.feature.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.toponym.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\ToponymImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.continent.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\ContinentImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.country.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\CountryImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.admin1.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\Admin1ImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.admin2.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\Admin2ImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.hierarchy.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\HierarchyImportStepBuilder</parameter>
+
+    </parameters>
+
+    <services>
+        <service id="giosh94mhz_geonames.logger" class="Giosh94mhz\GeonamesBundle\Logger\GeonamesLogger">
+            <argument type="service" id="logger" />
+            <tag name="monolog.logger" channel="giosh94mhz_geonames" />
+        </service>
+
+        <service id="giosh94mhz_geonames.import.director" class="%giosh94mhz_geonames.import.director.class%" lazy="true">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <argument>%giosh94mhz_geonames.download.directory%</argument>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.feature" class="%giosh94mhz_geonames.import.step.feature.class%" lazy="true">
+            <tag name="giosh94mhz_geonames.import.all_steps" />
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <argument type="service" id="giosh94mhz_geonames.features_enabled"/>
+            <argument type="service" id="giosh94mhz_geonames.forced_features_enabled"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setLocale">
+                <argument>%giosh94mhz_geonames.feature.locale%</argument>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.toponym" class="%giosh94mhz_geonames.import.step.toponym.class%" lazy="true">
+            <tag name="giosh94mhz_geonames.import.all_steps" />
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <argument type="service" id="giosh94mhz_geonames.features_enabled"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setCityPopulation">
+                <argument>%giosh94mhz_geonames.toponym.cities%</argument>
+            </call>
+            <call method="setCountryCodes">
+                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
+            </call>
+            <call method="setAlternateNamesIncluded">
+                <argument>%giosh94mhz_geonames.toponym.options.alternate_names%</argument>
+            </call>
+            <call method="setAlternateCountryCodesIncluded">
+                <argument>%giosh94mhz_geonames.toponym.options.alternate_country_codes%</argument>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.continent" class="%giosh94mhz_geonames.import.step.continent.class%" lazy="true">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.country" class="%giosh94mhz_geonames.import.step.country.class%" lazy="true">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setCountryCodes">
+                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.admin1" class="%giosh94mhz_geonames.import.step.admin1.class%" lazy="true">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setCountryCodes">
+                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.admin2" class="%giosh94mhz_geonames.import.step.admin2.class%" lazy="true">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setCountryCodes">
+                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.hierarchy" class="%giosh94mhz_geonames.import.step.hierarchy.class%" lazy="true">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
+        </service>
+    </services>
+
+</container>

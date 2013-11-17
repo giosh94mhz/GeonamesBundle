@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Giosh94mhz\GeonamesBundle\Entity\HierarchyLink" table="hierarchy">
+
+    <id name="parent" association-key="true"/>
+    <id name="child" association-key="true"/>
+
+    <many-to-one field="parent" target-entity="Toponym" inversed-by="children">
+       <cascade>
+         <cascade-persist />
+         <cascade-detach />
+       </cascade>
+       <join-columns>
+        <join-column name="parent_id" referenced-column-name="geoname_id" nullable="false"/>
+      </join-columns>
+    </many-to-one>
+
+    <many-to-one field="child" target-entity="Toponym" inversed-by="parents">
+      <cascade>
+        <cascade-persist />
+        <cascade-detach />
+      </cascade>
+      <join-columns>
+        <join-column name="child_id" referenced-column-name="geoname_id" nullable="false"/>
+      </join-columns>
+    </many-to-one>
+
+    <field name="type" type="string" column="type" length="50" nullable="true"/>
+  </entity>
+</doctrine-mapping>

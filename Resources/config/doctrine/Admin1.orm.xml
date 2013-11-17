@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Giosh94mhz\GeonamesBundle\Entity\Admin1" table="admin1">
+    <id name="toponym" column="geoname_id" association-key="true"/>
+    <one-to-one field="toponym" target-entity="Toponym">
+      <cascade>
+        <cascade-all/>
+      </cascade>
+      <join-columns>
+        <join-column name="geoname_id" referenced-column-name="geoname_id" nullable="false"/>
+      </join-columns>
+    </one-to-one>
+    <field name="code" type="string" column="admin1" length="2" nullable="false">
+      <options><option name="fixed">true</option></options>
+    </field>
+    <field name="countryCode" type="string" column="country" length="2" nullable="false">
+      <options><option name="fixed">true</option></options>
+    </field>
+    <field name="name" type="string" column="name" length="200" nullable="false"/>
+    <field name="asciiName" type="string" column="ascii_name" length="200" nullable="false"/>
+  </entity>
+</doctrine-mapping>

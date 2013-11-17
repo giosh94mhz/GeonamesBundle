@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Giosh94mhz\GeonamesBundle\Entity\AlternateName" table="alternate_name">
+    <id name="id" type="integer" column="alternate_name_id"/>
+    <many-to-one field="toponym" target-entity="Toponym" inversed-by="alternateNames">
+       <join-columns>
+        <join-column name="geoname_id" referenced-column-name="geoname_id" nullable="false"/>
+      </join-columns>
+    </many-to-one>
+    <field name="isoLanguage" type="string" column="iso_language" length="7" nullable="false"/>
+    <field name="alternateName" type="string" column="alternate_name" length="200" nullable="false"/>
+    <field name="isPreferredName" type="boolean" column="is_preferred_name" nullable="false"/>
+    <field name="isShortName" type="boolean" column="is_short_name" nullable="false"/>
+    <field name="isColloquial" type="boolean" column="is_colloquial" nullable="false"/>
+    <field name="isHistoric" type="boolean" column="is_historic" nullable="false"/>
+  </entity>
+</doctrine-mapping>

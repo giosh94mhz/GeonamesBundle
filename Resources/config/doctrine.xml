@@ -1,0 +1,45 @@
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="giosh94mhz_geonames.orm.object_manager_name">default</parameter>
+        <parameter key="giosh94mhz_geonames.orm.object_manager_decorator.class">Giosh94mhz\GeonamesBundle\Doctrine\BulkInsertObjectManagerDecorator</parameter>
+        <parameter key="giosh94mhz_geonames.orm.object_manager_real.class">Doctrine\ORM\EntityManager</parameter>
+        <parameter key="giosh94mhz_geonames.orm.feature.class">Giosh94mhz\GeonamesBundle\Entity\Feature</parameter>
+        <parameter key="giosh94mhz_geonames.orm.feature_repository.class">Doctrine\ORM\EntityRepository</parameter>
+        <parameter key="giosh94mhz_geonames.orm.feature_collection.class">Giosh94mhz\GeonamesBundle\Import\FeatureCollection</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="giosh94mhz_geonames.orm.object_manager_real" factory-service="doctrine" factory-method="getManager"
+            class="%giosh94mhz_geonames.orm.object_manager_real.class%" public="false">
+            <argument>%giosh94mhz_geonames.orm.object_manager_name%</argument>
+        </service>
+
+        <service id="giosh94mhz_geonames.orm.object_manager" class="%giosh94mhz_geonames.orm.object_manager_decorator.class%">
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager_real"/>
+        </service>
+
+        <service id="giosh94mhz_geonames.orm.feature_repository" factory-service="giosh94mhz_geonames.orm.object_manager" factory-method="getRepository"
+            class="%giosh94mhz_geonames.orm.feature_repository.class%" public="false">
+            <argument>%giosh94mhz_geonames.orm.feature.class%</argument>
+        </service>
+
+        <service id="giosh94mhz_geonames.features_enabled" class="%giosh94mhz_geonames.orm.feature_collection.class%"
+            lazy="true" public="false">
+            <argument type="service" id="giosh94mhz_geonames.orm.feature_repository"/>
+            <argument>%giosh94mhz_geonames.feature.include%</argument>
+            <argument>%giosh94mhz_geonames.feature.exclude%</argument>
+            <argument>%giosh94mhz_geonames.feature.force_include%</argument>
+        </service>
+
+        <service id="giosh94mhz_geonames.forced_features_enabled" class="%giosh94mhz_geonames.orm.feature_collection.class%"
+            lazy="true" public="false">
+            <argument type="service" id="giosh94mhz_geonames.orm.feature_repository"/>
+            <argument>%giosh94mhz_geonames.feature.force_include%</argument>
+        </service>
+
+    </services>
+
+</container>
