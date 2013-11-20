@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Type;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Giosh94mhz\GeonamesBundle\DependencyInjection\Compiler\ImportAllCompilerPass;
+use Giosh94mhz\GeonamesBundle\DependencyInjection\Compiler\GeocoderCompilerPass;
 
 class Giosh94mhzGeonamesBundle extends Bundle
 {
@@ -21,5 +22,6 @@ class Giosh94mhzGeonamesBundle extends Bundle
     {
         parent::build($container);
         $container->addCompilerPass(new ImportAllCompilerPass());
+        $container->addCompilerPass(new GeocoderCompilerPass());
     }
 }

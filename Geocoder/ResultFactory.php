@@ -1,17 +1,17 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Geocoder;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Geocoder\Result\ResultFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
 
 class ResultFactory implements ResultFactoryInterface
 {
-    protected $em;
+    protected $om;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ObjectManager $om)
     {
-        $this->em=$em;
+        $this->om = $om;
     }
 
     /**
@@ -21,7 +21,7 @@ class ResultFactory implements ResultFactoryInterface
      */
     public function createFromArray(array $data)
     {
-        if( !isset($data['geonameid']) )
+        if (! isset($data['geonameid']) )
             throw new InvalidArgumentException("A toponym can be loaded only by geonameid");
 
         return new ResultAdapter($this->loader($data['geonameid']));
@@ -32,7 +32,7 @@ class ResultFactory implements ResultFactoryInterface
     */
     public function newInstance()
     {
-        $result=new ResultAdapter();
+        $result = new ResultAdapter();
         $result->setLoaderClosure(function ($geonameid) {
             return $this->loader($geonameid);
         });
@@ -42,8 +42,8 @@ class ResultFactory implements ResultFactoryInterface
 
     private function loader($geonameid)
     {
-        $toponym=$this->em->find('Giosh94mhzGeonamesBundle:Toponym', $geonameid);
-        if( !$toponym )
+        $toponym = $this->om->find('Giosh94mhzGeonamesBundle:Toponym', $geonameid);
+        if (! $toponym )
             throw new InvalidArgumentException("Cannot load the Toponym with id '{$geonameid}'");
 
         return $toponym;

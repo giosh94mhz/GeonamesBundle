@@ -2,6 +2,7 @@
 
 namespace Giosh94mhz\GeonamesBundle\Model;
 
+use Giosh94mhz\GeonamesBundle\Entity\Feature;
 interface Toponym
 {
     /**
@@ -37,6 +38,7 @@ interface Toponym
     /**
      * feture class
      * @see http://www.geonames.org/export/codes.html
+     * @return Feature
      */
     public function getFeature();
 

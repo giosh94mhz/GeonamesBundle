@@ -25,15 +25,23 @@ class Giosh94mhzGeonamesExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
+        $this->setPersistenceLayer($config, $container, $loader);
+
+        $this->setConfigurationParameters($config, $container, $loader);
+
+        $this->setImportTags($config, $container, $loader);
+
+        $this->setGeocoder($config, $container, $loader);
+    }
+
+    private function setPersistenceLayer(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
         // only if doctrine
         $loader->load('doctrine.xml');
 
-        $this->setConfigurationParameters($config, $container);
-
-        $this->setImportTags($config, $container);
     }
 
-    private function setConfigurationParameters(array $config, ContainerBuilder $container)
+    private function setConfigurationParameters(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
         /*
          * DATABASE
@@ -145,7 +153,7 @@ class Giosh94mhzGeonamesExtension extends Extension
         );
     }
 
-    private function setImportTags(array $config, ContainerBuilder $container)
+    private function setImportTags(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
         if ($config['continent']['enabled'])
             $container->getDefinition('giosh94mhz_geonames.import.step.continent')->addTag('giosh94mhz_geonames.import.all_steps');
@@ -159,4 +167,8 @@ class Giosh94mhzGeonamesExtension extends Extension
             $container->getDefinition('giosh94mhz_geonames.import.step.hierarchy')->addTag('giosh94mhz_geonames.import.all_steps');
     }
 
+    private function setGeocoder(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        $loader->load('geocoder.xml');
+    }
 }

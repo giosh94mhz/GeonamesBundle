@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="giosh94mhz_geonames.geocoder.persistent_geonames_provider.class">Giosh94mhz\GeonamesBundle\Geocoder\PersistentGeonamesProvider</parameter>
+        <parameter key="giosh94mhz_geonames.geocoder.result_factory.class">Giosh94mhz\GeonamesBundle\Geocoder\ResultFactory</parameter>
+    </parameters>
+
+    <services>
+        <service id="giosh94mhz_geonames.geocoder.persistent_geonames_provider"
+            class="%giosh94mhz_geonames.geocoder.persistent_geonames_provider.class%" public="false">
+            <tag name="bazinga_geocoder.provider"/>
+            <!-- EntityManager should not be used: create a DB abstraction layer to support other ObjectManager -->
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager_real"/>
+        </service>
+
+        <service id="giosh94mhz_geonames.geocoder.result_factory"
+            class="%giosh94mhz_geonames.geocoder.result_factory.class%" public="false">
+            <!-- EntityManager should not be used: create a DB abstraction layer to support other ObjectManager -->
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager_real"/>
+        </service>
+    </services>
+
+</container>

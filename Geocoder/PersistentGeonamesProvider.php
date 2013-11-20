@@ -8,13 +8,15 @@ use Geocoder\Exception\UnsupportedException;
 
 class PersistentGeonamesProvider implements LocaleAwareProviderInterface
 {
+
     protected $em;
+
     protected $locale;
 
     public function __construct(EntityManagerInterface $em, $locale = null)
     {
-        $this->em=$em;
-        $this->locale=$locale;
+        $this->em = $em;
+        $this->locale = $locale;
     }
 
     /**
@@ -27,23 +29,21 @@ class PersistentGeonamesProvider implements LocaleAwareProviderInterface
             throw new UnsupportedException('The PersistentGeonamesProvider does not support IP addresses.');
         }
 
-        $dql=<<<DQL
+        $dql = <<<DQL
 SELECT t
 FROM Giosh94mhzGeonamesBundle:Toponym t
-WHERE d.name LIKE :name
-LIMIT 1
-
+WHERE t.name LIKE :name
 DQL;
 
         /* @var $query \Doctrine\ORM\Query */
-        $query=$this->em->createQuery($dql);
-        $results=$query->setParameter('name', "%{$address}%")
-                       ->getResult();
-        if ( empty($results) )
-            throw new NoResultException();
+        $query = $this->em->createQuery($dql);
 
         /* @var $toponym \Giosh94mhz\GeonamesBundle\Entity\Toponym */
-        $toponym=$results[0];
+        $toponym = $query->setParameter('name', "%{$address}%")
+                         ->setMaxResults(1)
+                         ->getOneOrNullResult();
+        if (! $toponym)
+            throw new NoResultException();
 
         return array(
             'geonameid' => $toponym->getId(),
@@ -72,7 +72,7 @@ DQL;
      */
     public function getReversedData(array $coordinates)
     {
-        $dql=<<<DQL
+        $dql = <<<DQL
 SELECT t
 FROM Giosh94mhzGeonamesBundle:Toponym t
 WHERE
@@ -87,14 +87,13 @@ LIMIT 1
 DQL;
 
         /* @var $query \Doctrine\ORM\Query */
-        $query=$this->em->createQuery($dql);
-        $results=$query->setParameter('name', "%{$address}%")
-                       ->getResult();
-        if ( empty($results) )
+        $query = $this->em->createQuery($dql);
+        $results = $query->setParameter('name', "%{$address}%")->getResult();
+        if (empty($results))
             throw new NoResultException();
 
-        /* @var $toponym \Giosh94mhz\GeonamesBundle\Entity\Toponym */
-        $toponym=$results[0];
+            /* @var $toponym \Giosh94mhz\GeonamesBundle\Entity\Toponym */
+        $toponym = $results[0];
 
         return array(
             'geonameid' => $toponym->getId(),
