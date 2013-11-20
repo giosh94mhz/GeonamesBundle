@@ -122,12 +122,14 @@ class CurlDownload
         $progressFunction=null;
 
         if ($this->progressFunction) {
+            $files = $this->files;
+            $function = $this->progressFunction;
             $partialSizes=array();
             $totalSize=$this->requestContentLength();
 
-            $progressFunction=function ($i, $partial) use ($totalSize, &$partialSizes) {
-                $partialSizes[$i]=$this->files[$i]['downloaded']+$partial;
-                call_user_func($this->progressFunction, $totalSize, min( array_sum($partialSizes), $totalSize ));
+            $progressFunction=function ($i, $partial) use (&$function, &$files, $totalSize, &$partialSizes) {
+                $partialSizes[$i]=$files[$i]['downloaded']+$partial;
+                call_user_func($function, $totalSize, min( array_sum($partialSizes), $totalSize ));
             };
         }
 
@@ -263,11 +265,11 @@ class CurlDownload
     /**
      * Set a callback for download progress.
      *
-     * @param callable $progressFunction Two params are required: $download_size, $downloaded
+     * @param Closure $progressFunction Two params are required: $download_size, $downloaded
      *
      * @return string
      */
-    public function setProgressFunction(callable $progressFunction)
+    public function setProgressFunction(\Closure $progressFunction)
     {
         $this->progressFunction = $progressFunction;
 
