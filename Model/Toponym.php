@@ -1,8 +1,6 @@
 <?php
-
 namespace Giosh94mhz\GeonamesBundle\Model;
 
-use Giosh94mhz\GeonamesBundle\Entity\Feature;
 interface Toponym
 {
     /**
