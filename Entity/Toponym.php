@@ -228,7 +228,7 @@ class Toponym implements ToponymInterface
      */
     public function setLongitude($longitude)
     {
-        $this->longitude = $longitude;
+        $this->longitude = (float) $longitude;
 
         return $this;
     }
@@ -435,7 +435,7 @@ class Toponym implements ToponymInterface
      */
     public function setGtopo30($gtopo30)
     {
-        $this->gtopo30 = $gtopo30;
+        $this->gtopo30 = intval($gtopo30);
 
         return $this;
     }
@@ -479,9 +479,10 @@ class Toponym implements ToponymInterface
      * @param  \DateTime $lastModify
      * @return Toponym
      */
-    public function setLastModify($lastModify)
+    public function setLastModify(\DateTime $lastModify)
     {
-        $this->lastModify = $lastModify;
+        if ($lastModify != $this->lastModify)
+            $this->lastModify = $lastModify;
 
         return $this;
     }
