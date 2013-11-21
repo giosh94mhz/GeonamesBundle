@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class BulkInsertObjectManagerDecorator implements ObjectManager
 {
-    const DEFAULT_BUFFER_SIZE = 10;
+    const DEFAULT_BUFFER_SIZE = 100;
 
     protected $em;
 
