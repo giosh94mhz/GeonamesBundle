@@ -69,6 +69,7 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     public function getCity()
     {
         $feature = $this->toponym->getFeature();
+
         return ($feature->getClass() === 'P' && substr($feature->getCode(), 0, 2) !== 'PC' ) ? $this->toponym->getName() : null;
     }
 
@@ -85,6 +86,7 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     public function getCountry()
     {
         $feature = $this->toponym->getFeature();
+
         return ($feature->getClass() === 'P' && substr($feature->getCode(), 0, 2) === 'PC' ) ? $this->toponym->getName() : null;
     }
 
@@ -116,6 +118,7 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     public function getTimezone()
     {
         $tz = $this->toponym->getTimezone();
+
         return $tz ? $tz->getName() : null;
     }
 

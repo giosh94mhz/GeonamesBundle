@@ -46,6 +46,7 @@ class GeoDistance extends FunctionNode
          *
          * formula adapted from http://www.scribd.com/doc/2569355/Geo-Distance-Search-with-MySQL
          */
+
         return sprintf('12756 * ASIN(SQRT(POWER(SIN((%s - %s) * PI()/360), 2) + COS(%s * PI()/180) * COS(%s * PI()/180) * POWER(SIN((%s - %s) * PI()/360), 2)))',
                        $sqlWalker->walkArithmeticPrimary($this->latOrigin),
                        $sqlWalker->walkArithmeticPrimary($this->latDestination),

@@ -36,7 +36,6 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dir . $filename, $this->download->add('http://www.example.com/'.$filename));
     }
 
-
     /**
      * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::getUseCache
      * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::setUseCache
@@ -65,7 +64,7 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
 
         $outTotal = 0;
         $outPartial = -1;
-        $this->download->setProgressFunction(function($total, $partial) use(&$outTotal, &$outPartial) {
+        $this->download->setProgressFunction(function ($total, $partial) use (&$outTotal, &$outPartial) {
             $outTotal = $total;
             if ($partial > 0)
                 $outPartial = $partial;
@@ -111,7 +110,7 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
         $this->download->setUseCache(true);
 
         $cacheUsed = true;
-        $this->download->setProgressFunction(function($total, $partial) use(&$cacheUsed) {
+        $this->download->setProgressFunction(function ($total, $partial) use (&$cacheUsed) {
             if ($partial > 0)
                 $cacheUsed = false;
         });
