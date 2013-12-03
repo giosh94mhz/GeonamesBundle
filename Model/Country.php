@@ -57,13 +57,6 @@ interface Country extends Toponym
     public function getArea();
 
     /**
-     * Get population
-     *
-     * @return integer
-     */
-    public function getPopulation();
-
-    /**
      * Get continent
      *
      * @return string
