@@ -8,6 +8,13 @@ namespace Giosh94mhz\GeonamesBundle\Model;
 interface AlternateName
 {
     /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId();
+
+    /**
      * Get isoLanguage
      *
      * @return string
@@ -48,13 +55,6 @@ interface AlternateName
      * @return boolean
     */
     public function getIsHistoric();
-
-    /**
-     * Get id
-     *
-     * @return integer
-    */
-    public function getId();
 
     /**
      * Get toponym

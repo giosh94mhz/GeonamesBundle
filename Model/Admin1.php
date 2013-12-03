@@ -11,30 +11,9 @@ interface Admin1 extends Toponym
     public function getCode();
 
     /**
-     * Get countryCode
-     *
-     * @return string
-     */
-    public function getCountryCode();
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * Get ASCII name
-     *
-     * @return string
-     */
-    public function getAsciiName();
-
-    /**
      * Get toponym
      *
-     * @return \Giosh94mhz\GeonamesBundle\Entity\Toponym
+     * @return Toponym
      */
     public function getToponym();
 }
