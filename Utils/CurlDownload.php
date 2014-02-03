@@ -102,7 +102,9 @@ class CurlDownload
 
             $this->downloadsSize = 0.;
             foreach ($chCopy as $ch) {
-                $this->downloadsSize += curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+                $length = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+                if ($length > 0)
+                    $this->downloadsSize += $length;
                 curl_close($ch);
             }
         }
