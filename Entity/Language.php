@@ -2,13 +2,18 @@
 
 namespace Giosh94mhz\GeonamesBundle\Entity;
 
-use Giosh94mhz\GeonamesBundle\Model\IsoLanguageCode as IsoLanguageCodeInterface;
+use Giosh94mhz\GeonamesBundle\Model\Language as LanguageInterface;
 
 /**
- * IsoLanguageCode
+ * ISO 639 Language
  */
-class IsoLanguageCode implements IsoLanguageCodeInterface
+class Language implements LanguageInterface
 {
+    /**
+     * @var string
+     */
+    private $iso639p3;
+
     /**
      * @var string
      */
@@ -22,12 +27,29 @@ class IsoLanguageCode implements IsoLanguageCodeInterface
     /**
      * @var string
      */
-    private $languageName;
+    private $name;
+
 
     /**
-     * @var string
+     * Construct
+     *
+     * @param  string          $iso639p3
+     * @return IsoLanguageCode
      */
-    private $iso639p3;
+    public function __construct($iso639p3)
+    {
+        $this->iso639p3 = $iso639p3;
+    }
+
+    /**
+     * Get iso639p3
+     *
+     * @return string
+     */
+    public function getIso639p3()
+    {
+        return $this->iso639p3;
+    }
 
     /**
      * Set iso639p2
@@ -76,48 +98,25 @@ class IsoLanguageCode implements IsoLanguageCodeInterface
     }
 
     /**
-     * Set languageName
+     * Set name
      *
-     * @param  string          $languageName
+     * @param  string          $name
      * @return IsoLanguageCode
      */
-    public function setLanguageName($languageName)
+    public function setName($name)
     {
-        $this->languageName = $languageName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get languageName
+     * Get name
      *
      * @return string
      */
-    public function getLanguageName()
+    public function getName()
     {
-        return $this->languageName;
-    }
-
-    /**
-     * Set iso639p3
-     *
-     * @param  string          $iso639p3
-     * @return IsoLanguageCode
-     */
-    public function setIso639p3($iso639p3)
-    {
-        $this->iso639p3 = $iso639p3;
-
-        return $this;
-    }
-
-    /**
-     * Get iso639p3
-     *
-     * @return string
-     */
-    public function getIso639p3()
-    {
-        return $this->iso639p3;
+        return $this->name;
     }
 }

@@ -3,9 +3,9 @@
 namespace Giosh94mhz\GeonamesBundle\Model;
 
 /**
- * IsoLanguageCode
+ * Language
  */
-interface IsoLanguageCode
+interface Language
 {
     /**
      * Get iso639p3
@@ -29,9 +29,9 @@ interface IsoLanguageCode
     public function getIso639p1();
 
     /**
-     * Get languageName
+     * Get name
      *
      * @return string
      */
-    public function getLanguageName();
+    public function getName();
 }
