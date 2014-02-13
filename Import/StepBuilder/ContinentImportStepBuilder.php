@@ -9,7 +9,7 @@ use Giosh94mhz\GeonamesBundle\Import\ContinentReader;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  */
 class ContinentImportStepBuilder extends AbstractImportStepBuilder
 {

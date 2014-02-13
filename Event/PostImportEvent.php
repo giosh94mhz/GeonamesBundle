@@ -3,7 +3,7 @@ namespace Giosh94mhz\GeonamesBundle\Event;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  *
  */
 class PostImportEvent extends ImportEvent

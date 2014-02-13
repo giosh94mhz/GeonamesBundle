@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  *
  */
 class Admin2ImportStepBuilder extends AbstractAdminImportStepBuilder

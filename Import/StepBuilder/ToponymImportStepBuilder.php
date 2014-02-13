@@ -13,7 +13,7 @@ use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  */
 class ToponymImportStepBuilder extends AbstractImportStepBuilder
 {

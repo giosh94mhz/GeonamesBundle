@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  *
  */
 class GeonamesLogger extends AbstractLogger

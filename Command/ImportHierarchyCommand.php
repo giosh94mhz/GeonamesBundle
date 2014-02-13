@@ -6,7 +6,7 @@ use Giosh94mhz\GeonamesBundle\Model\Import\ImportDirector;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  */
 class ImportHierarchyCommand extends AbstractImportCommand
 {

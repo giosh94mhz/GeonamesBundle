@@ -10,7 +10,7 @@ use Giosh94mhz\GeonamesBundle\Entity\HierarchyLink;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  *
  */
 class HierarchyImportStepBuilder extends AbstractImportStepBuilder

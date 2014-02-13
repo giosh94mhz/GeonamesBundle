@@ -12,7 +12,7 @@ use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  *
  */
 abstract class AbstractAdminImportStepBuilder extends AbstractImportStepBuilder

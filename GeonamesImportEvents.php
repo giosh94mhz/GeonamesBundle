@@ -3,7 +3,7 @@ namespace Giosh94mhz\GeonamesBundle;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  */
 final class GeonamesImportEvents
 {

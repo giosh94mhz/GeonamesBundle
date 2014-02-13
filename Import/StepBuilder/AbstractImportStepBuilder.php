@@ -6,7 +6,7 @@ use Giosh94mhz\GeonamesBundle\Model\Import\ImportStepBuilder;
 
 /**
  *
- * @author giosh
+ * @author Premi Giorgio <giosh94mz@gmail.com>
  */
 abstract class AbstractImportStepBuilder implements ImportStepBuilder
 {
