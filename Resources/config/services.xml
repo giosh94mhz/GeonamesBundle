@@ -28,6 +28,7 @@
         <parameter key="giosh94mhz_geonames.import.step.feature.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.language.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\LanguageImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.toponym.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\ToponymImportStepBuilder</parameter>
+        <parameter key="giosh94mhz_geonames.import.step.alternate_name.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\AlternateNameImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.continent.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\ContinentImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.country.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\CountryImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.admin1.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\Admin1ImportStepBuilder</parameter>
@@ -89,6 +90,14 @@
             </call>
             <call method="setAlternateCountryCodesIncluded">
                 <argument>%giosh94mhz_geonames.toponym.options.alternate_country_codes%</argument>
+            </call>
+        </service>
+
+        <service id="giosh94mhz_geonames.import.step.alternate_name" class="%giosh94mhz_geonames.import.step.alternate_name.class%" lazy="true">
+            <tag name="giosh94mhz_geonames.import.all_steps" />
+            <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher"/>
             </call>
         </service>
 

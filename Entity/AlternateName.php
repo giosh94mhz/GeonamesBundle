@@ -10,14 +10,24 @@ use Giosh94mhz\GeonamesBundle\Model\AlternateName as AlternateNameInterface;
 class AlternateName implements AlternateNameInterface
 {
     /**
-     * @var string
+     * @var integer
      */
-    private $isoLanguage;
+    private $id;
+
+    /**
+     * @var \Giosh94mhz\GeonamesBundle\Entity\Toponym
+     */
+    private $toponym;
 
     /**
      * @var string
      */
-    private $alternateName;
+    private $language;
+
+    /**
+     * @var string
+     */
+    private $name;
 
     /**
      * @var boolean
@@ -39,165 +49,10 @@ class AlternateName implements AlternateNameInterface
      */
     private $isHistoric;
 
-    /**
-     * @var integer
-     */
-    private $id;
 
-    /**
-     * @var \Giosh94mhz\GeonamesBundle\Entity\Toponym
-     */
-    private $toponym;
-
-    /**
-     * Set isoLanguage
-     *
-     * @param  string        $isoLanguage
-     * @return AlternateName
-     */
-    public function setIsoLanguage($isoLanguage)
+    public function __construct($id)
     {
-        $this->isoLanguage = $isoLanguage;
-
-        return $this;
-    }
-
-    /**
-     * Get isoLanguage
-     *
-     * @return string
-     */
-    public function getIsoLanguage()
-    {
-        return $this->isoLanguage;
-    }
-
-    /**
-     * Set alternateName
-     *
-     * @param  string        $alternateName
-     * @return AlternateName
-     */
-    public function setAlternateName($alternateName)
-    {
-        $this->alternateName = $alternateName;
-
-        return $this;
-    }
-
-    /**
-     * Get alternateName
-     *
-     * @return string
-     */
-    public function getAlternateName()
-    {
-        return $this->alternateName;
-    }
-
-    /**
-     * Set isPreferredName
-     *
-     * @param  boolean       $isPreferredName
-     * @return AlternateName
-     */
-    public function setIsPreferredName($isPreferredName)
-    {
-        $this->isPreferredName = $isPreferredName;
-
-        return $this;
-    }
-
-    /**
-     * Get isPreferredName
-     *
-     * @return boolean
-     */
-    public function getIsPreferredName()
-    {
-        return $this->isPreferredName;
-    }
-
-    /**
-     * Set isShortName
-     *
-     * @param  boolean       $isShortName
-     * @return AlternateName
-     */
-    public function setIsShortName($isShortName)
-    {
-        $this->isShortName = $isShortName;
-
-        return $this;
-    }
-
-    /**
-     * Get isShortName
-     *
-     * @return boolean
-     */
-    public function getIsShortName()
-    {
-        return $this->isShortName;
-    }
-
-    /**
-     * Set isColloquial
-     *
-     * @param  boolean       $isColloquial
-     * @return AlternateName
-     */
-    public function setIsColloquial($isColloquial)
-    {
-        $this->isColloquial = $isColloquial;
-
-        return $this;
-    }
-
-    /**
-     * Get isColloquial
-     *
-     * @return boolean
-     */
-    public function getIsColloquial()
-    {
-        return $this->isColloquial;
-    }
-
-    /**
-     * Set isHistoric
-     *
-     * @param  boolean       $isHistoric
-     * @return AlternateName
-     */
-    public function setIsHistoric($isHistoric)
-    {
-        $this->isHistoric = $isHistoric;
-
-        return $this;
-    }
-
-    /**
-     * Get isHistoric
-     *
-     * @return boolean
-     */
-    public function getIsHistoric()
-    {
-        return $this->isHistoric;
-    }
-
-    /**
-     * Set id
-     *
-     * @param  integer       $id
-     * @return AlternateName
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
+        $this->id = intval($id);
     }
 
     /**
@@ -231,5 +86,143 @@ class AlternateName implements AlternateNameInterface
     public function getToponym()
     {
         return $this->toponym;
+    }
+
+    /**
+     * Set language
+     *
+     * @param  string        $language
+     * @return AlternateName
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Set name
+     *
+     * @param  string        $name
+     * @return AlternateName
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set isPreferredName
+     *
+     * @param  boolean       $isPreferredName
+     * @return AlternateName
+     */
+    public function setIsPreferredName($isPreferredName)
+    {
+        $this->isPreferredName = $isPreferredName;
+
+        return $this;
+    }
+
+    /**
+     * Get isPreferredName
+     *
+     * @return boolean
+     */
+    public function isPreferredName()
+    {
+        return $this->isPreferredName;
+    }
+
+    /**
+     * Set isShortName
+     *
+     * @param  boolean       $isShortName
+     * @return AlternateName
+     */
+    public function setIsShortName($isShortName)
+    {
+        $this->isShortName = $isShortName;
+
+        return $this;
+    }
+
+    /**
+     * Get isShortName
+     *
+     * @return boolean
+     */
+    public function isShortName()
+    {
+        return $this->isShortName;
+    }
+
+    /**
+     * Set isColloquial
+     *
+     * @param  boolean       $isColloquial
+     * @return AlternateName
+     */
+    public function setIsColloquial($isColloquial)
+    {
+        $this->isColloquial = $isColloquial;
+
+        return $this;
+    }
+
+    /**
+     * Get isColloquial
+     *
+     * @return boolean
+     */
+    public function isColloquial()
+    {
+        return $this->isColloquial;
+    }
+
+    /**
+     * Set isHistoric
+     *
+     * @param  boolean       $isHistoric
+     * @return AlternateName
+     */
+    public function setIsHistoric($isHistoric)
+    {
+        $this->isHistoric = $isHistoric;
+
+        return $this;
+    }
+
+    /**
+     * Get isHistoric
+     *
+     * @return boolean
+     */
+    public function isHistoric()
+    {
+        return $this->isHistoric;
     }
 }

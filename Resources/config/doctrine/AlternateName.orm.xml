@@ -7,8 +7,8 @@
         <join-column name="geoname_id" referenced-column-name="geoname_id" nullable="false"/>
       </join-columns>
     </many-to-one>
-    <field name="isoLanguage" type="string" column="iso_language" length="7" nullable="false"/>
-    <field name="alternateName" type="string" column="alternate_name" length="200" nullable="false"/>
+    <field name="language" type="string" column="iso_language" length="7" nullable="true"/>
+    <field name="name" type="string" column="alternate_name" length="200" nullable="false"/>
     <field name="isPreferredName" type="boolean" column="is_preferred_name" nullable="false"/>
     <field name="isShortName" type="boolean" column="is_short_name" nullable="false"/>
     <field name="isColloquial" type="boolean" column="is_colloquial" nullable="false"/>
