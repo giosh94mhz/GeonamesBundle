@@ -24,6 +24,7 @@
         <parameter key="giosh94mhz_geonames.hierarchy.enabled"/>
 
         <!-- internals -->
+        <parameter key="giosh94mhz_geonames.import.download.class">Giosh94mhz\GeonamesBundle\Utils\CurlDownload</parameter>
         <parameter key="giosh94mhz_geonames.import.director.class">Giosh94mhz\GeonamesBundle\Import\ImportDirector</parameter>
         <parameter key="giosh94mhz_geonames.import.step.feature.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.language.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\LanguageImportStepBuilder</parameter>
@@ -43,9 +44,15 @@
             <tag name="monolog.logger" channel="giosh94mhz_geonames" />
         </service>
 
+        <service id="giosh94mhz_geonames.import.download" class="%giosh94mhz_geonames.import.download.class%" lazy="true" public="false">
+            <call method="setDirectory">
+                <argument>%giosh94mhz_geonames.download.directory%</argument>
+            </call>
+        </service>
+
         <service id="giosh94mhz_geonames.import.director" class="%giosh94mhz_geonames.import.director.class%" lazy="true">
             <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
-            <argument>%giosh94mhz_geonames.download.directory%</argument>
+            <argument type="service" id="giosh94mhz_geonames.import.download"/>
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher"/>
             </call>

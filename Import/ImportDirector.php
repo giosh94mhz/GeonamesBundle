@@ -19,16 +19,16 @@ class ImportDirector implements ImportDirectorInterface
 {
     protected $om;
 
-    protected $downloadDirectory;
+    protected $downloader;
 
     protected $dispatcher;
 
     protected $builders;
 
-    public function __construct(ObjectManager $om, $downloadDirectory)
+    public function __construct(ObjectManager $om, CurlDownload $downloader)
     {
         $this->om = $om;
-        $this->downloadDirectory = $downloadDirectory;
+        $this->downloader = $downloader;
         $this->builders = array();
     }
 
@@ -130,26 +130,25 @@ class ImportDirector implements ImportDirectorInterface
             $this->dispatcher->dispatch(GeonamesImportEvents::PRE_DOWNLOAD, new ImportEvent());
 
         $fs = new Filesystem();
-        $fs->mkdir($this->downloadDirectory);
-
-        $downloader = new CurlDownload();
-        $downloader->setDirectory($this->downloadDirectory);
+        $fs->mkdir($this->downloader->getDirectory());
 
         /* @var $builder \Giosh94mhz\GeonamesBundle\Model\Import\ImportStepBuilder */
         foreach ($this->builders as $builder)
-            $builder->download($downloader);
+            $builder->download($this->downloader);
 
         if ($this->dispatcher) {
             $dispatcher = $this->dispatcher;
-            $downloader->setProgressFunction(function ($total, $current) use ($dispatcher) {
+            $this->downloader->setProgressFunction(function ($total, $current) use ($dispatcher) {
                 $dispatcher->dispatch(GeonamesImportEvents::ON_DOWNLOAD_PROGRESS, new OnProgressEvent($total, $current));
             });
         }
 
-        $result = $downloader->download();
+        $result = $this->downloader->download();
 
         if ($this->dispatcher)
             $this->dispatcher->dispatch(GeonamesImportEvents::POST_DOWNLOAD, new ImportEvent());
+
+        $this->downloader->clear();
 
         return $result;
     }
