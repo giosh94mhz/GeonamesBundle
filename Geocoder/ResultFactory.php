@@ -4,6 +4,7 @@ namespace Giosh94mhz\GeonamesBundle\Geocoder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Geocoder\Result\ResultFactoryInterface;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
+use Giosh94mhz\GeonamesBundle\Model\Toponym;
 
 class ResultFactory implements ResultFactoryInterface
 {
@@ -33,14 +34,20 @@ class ResultFactory implements ResultFactoryInterface
     public function newInstance()
     {
         $result = new ResultAdapter();
-        $result->setLoaderClosure(function ($geonameid) {
-            return $this->loader($geonameid);
+        $callback = array($this, 'createFromId');
+        $result->setLoaderClosure(function ($geonameid) use {
+            return call_user_func($callback, $geonameid);
         });
 
         return $result;
     }
 
-    private function loader($geonameid)
+    /**
+     * @param integer $geonameid A geonameid to load.
+     *
+     * @return Toponym
+     */
+    public function createFromId($geonameid)
     {
         $toponym = $this->om->find('Giosh94mhzGeonamesBundle:Toponym', $geonameid);
         if (! $toponym )

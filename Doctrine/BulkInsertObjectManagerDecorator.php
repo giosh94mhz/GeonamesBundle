@@ -10,17 +10,13 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
 
     protected $em;
 
-    /**
-     *
-     * @var boolean
-     */
-    protected $transactional;
-
     protected $entityBuffer;
 
     protected $maxBufferSize;
 
     protected $bufferSize;
+
+    private $onTransactionalFlush;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -28,6 +24,7 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
         $this->entityBuffer = array();
         $this->bufferSize = 0;
         $this->maxBufferSize = self::DEFAULT_BUFFER_SIZE;
+        $this->onTransactionalFlush = false;
     }
 
     public function getBufferSize()
@@ -94,9 +91,18 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
 
     public function flush()
     {
-        if (method_exists($this->em, 'transactional')) {
-            $this->em->transactional(function () {
-                $this->realFlush();
+        /*
+         * If transactional callback is available re-enter flush with onTransactionalFlush = true
+         * and then call realFlush (this trick is required for compatibility with PHP 5.3+)
+         */
+        if (! $this->onTransactionalFlush && method_exists($this->em, 'transactional')) {
+            $callback = array($this, 'flush');
+            $onTransaction = &$this->onTransactionalFlush;
+
+            $this->em->transactional(function () use ($callback, &$onTransaction) {
+                $onTransaction = true;
+                call_user_func($callback);
+                $onTransaction = false;
             });
         } else {
             $this->realFlush();

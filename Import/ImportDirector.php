@@ -140,8 +140,9 @@ class ImportDirector implements ImportDirectorInterface
             $builder->download($downloader);
 
         if ($this->dispatcher) {
-            $downloader->setProgressFunction(function ($total, $current) {
-                $this->dispatcher->dispatch(GeonamesImportEvents::ON_DOWNLOAD_PROGRESS, new OnProgressEvent($total, $current));
+            $dispatcher = $this->dispatcher;
+            $downloader->setProgressFunction(function ($total, $current) use ($dispatcher) {
+                $dispatcher->dispatch(GeonamesImportEvents::ON_DOWNLOAD_PROGRESS, new OnProgressEvent($total, $current));
             });
         }
 

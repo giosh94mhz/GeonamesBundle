@@ -126,12 +126,12 @@ class CurlDownload
         if ($this->progressFunction) {
             $files = $this->files;
             $function = $this->progressFunction;
-            $partialSizes=array();
-            $totalSize=$this->requestContentLength();
+            $partialSizes = array();
+            $totalSize = $this->requestContentLength();
 
-            $progressFunction=function ($i, $partial) use (&$function, &$files, $totalSize, &$partialSizes) {
-                $partialSizes[$i]=$files[$i]['downloaded']+$partial;
-                call_user_func($function, $totalSize, min( array_sum($partialSizes), $totalSize ));
+            $progressFunction = function ($i, $partial) use (&$function, &$files, $totalSize, &$partialSizes) {
+                $partialSizes[$i] = $files[$i]['downloaded'] + $partial;
+                call_user_func($function, $totalSize, min(array_sum($partialSizes), $totalSize));
             };
         }
 
