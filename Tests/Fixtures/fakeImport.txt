@@ -1,0 +1,1 @@
+L.CONT	continent	continent: Europe, Africa, Asia, North America, South America, Oceania, Antarctica

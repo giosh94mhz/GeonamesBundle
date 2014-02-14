@@ -11,20 +11,20 @@ class FileReaderTest extends \PHPUnit_Framework_TestCase
     public function readerProvider()
     {
         $chained = new ChainedReader();
-        $chained->append(new TxtReader(__DIR__ . '/../Resources/admin1CodesASCII.txt'));
-        $chained->append(new TxtReader(__DIR__ . '/../Resources/admin2Codes.txt'));
+        $chained->append(new TxtReader(__DIR__ . '/../Fixtures/admin1CodesASCII.txt'));
+        $chained->append(new TxtReader(__DIR__ . '/../Fixtures/admin2Codes.txt'));
 
         return array(
             array(
-                new TxtReader(__DIR__ . '/../Resources/admin2Codes.txt'),
+                new TxtReader(__DIR__ . '/../Fixtures/admin2Codes.txt'),
                 array( 'IT.09.CO', 'Provincia di Como', 'Provincia di Como', '3178227' )
             ),
             array(
-                new ZipReader(__DIR__ . '/../Resources/allCountries.zip'),
+                new ZipReader(__DIR__ . '/../Fixtures/allCountries.zip'),
                 array ('6255146', 'Africa', 'Africa', 'Affrica,Africa,Afrihkka,Afrihkká,Afrika,Afrikka,Afriko,Afrique,Afryka,Afríka,Aphrike,Chau Phi,Châu Phi,afrika,afryqa,afryqya,afurika,an Afraic,apeulika,el Continente Negro,fei zhou,Àfrica,África,Āfrika,Αφρική,Африка,אפריקה,أفريقيا,افریقا,अफ़्रीका,แอฟริกา,アフリカ,非洲,아프리카', '7.1881', '21.09375', 'L', 'CONT', '', '', '', '', '', '', '0', '', '592', 'Africa/Bangui', '2013-02-13')
             ),
             array(
-                new ContinentReader(__DIR__ . '/../Resources/readme.txt'),
+                new ContinentReader(__DIR__ . '/../Fixtures/readme.txt'),
                 array ('AF', 'Africa', '6255146')
             ),
             array(
