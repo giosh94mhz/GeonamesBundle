@@ -1,8 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Event;
 
-use Giosh94mhz\GeonamesBundle\Event\ImportEvent;
-
 class ImportErrorEvent extends ImportEvent
 {
     protected $class;

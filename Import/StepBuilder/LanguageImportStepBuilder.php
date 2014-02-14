@@ -2,8 +2,8 @@
 namespace Giosh94mhz\GeonamesBundle\Import\StepBuilder;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
-use Giosh94mhz\GeonamesBundle\Utils\TxtReader;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\TxtReader;
 use Giosh94mhz\GeonamesBundle\Entity\Language;
 use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 
@@ -28,7 +28,7 @@ class LanguageImportStepBuilder extends AbstractImportStepBuilder
         $this->repository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Language');
     }
 
-    public function download(CurlDownload $download)
+    public function download(DownloadAdapter $download)
     {
         $this->file = $download->add(self::GEONAME_DUMP_URL .  "iso-languagecodes.txt");
     }

@@ -3,7 +3,7 @@ namespace Giosh94mhz\GeonamesBundle\Import\StepBuilder;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Giosh94mhz\GeonamesBundle\Entity\Continent;
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
 use Giosh94mhz\GeonamesBundle\Entity\Toponym;
 use Giosh94mhz\GeonamesBundle\Import\ContinentReader;
 
@@ -38,7 +38,7 @@ class ContinentImportStepBuilder extends AbstractImportStepBuilder
         $this->feature = $this->om->find('Giosh94mhzGeonamesBundle:Feature', array('class' => 'L', 'code' => 'CONT'));
     }
 
-    public function download(CurlDownload $download)
+    public function download(DownloadAdapter $download)
     {
         $this->file = $download->add(self::GEONAME_DUMP_URL . 'readme.txt');
     }

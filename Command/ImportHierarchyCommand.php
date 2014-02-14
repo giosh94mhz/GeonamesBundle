@@ -1,7 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Command;
 
-use Giosh94mhz\GeonamesBundle\Command\AbstractImportCommand;
 use Giosh94mhz\GeonamesBundle\Model\Import\ImportDirector;
 use Symfony\Component\Console\Input\InputInterface;
 

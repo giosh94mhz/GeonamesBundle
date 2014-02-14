@@ -2,9 +2,8 @@
 namespace Giosh94mhz\GeonamesBundle\Import\StepBuilder;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Giosh94mhz\GeonamesBundle\Import\StepBuilder\AbstractImportStepBuilder;
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
-use Giosh94mhz\GeonamesBundle\Utils\TxtReader;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\TxtReader;
 use Giosh94mhz\GeonamesBundle\Entity\Country;
 use Giosh94mhz\GeonamesBundle\Model\Toponym;
 use Giosh94mhz\GeonamesBundle\Exception\MissingToponymException;
@@ -13,7 +12,6 @@ use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 /**
  *
  * @author Premi Giorgio <giosh94mz@gmail.com>
- *
  */
 abstract class AbstractAdminImportStepBuilder extends AbstractImportStepBuilder
 {
@@ -45,7 +43,7 @@ abstract class AbstractAdminImportStepBuilder extends AbstractImportStepBuilder
         $this->countryCodes = $countryCodes;
     }
 
-    public function download(CurlDownload $download)
+    public function download(DownloadAdapter $download)
     {
         $this->file = $download->add($this->getUrl());
     }

@@ -1,7 +1,5 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Utils;
-
-use Giosh94mhz\GeonamesBundle\Utils\FileReader;
+namespace Giosh94mhz\GeonamesBundle\Import\FileReader;
 
 class ChainedReader implements FileReader
 {

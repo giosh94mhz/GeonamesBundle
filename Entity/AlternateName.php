@@ -49,7 +49,6 @@ class AlternateName implements AlternateNameInterface
      */
     private $isHistoric;
 
-
     public function __construct($id)
     {
         $this->id = intval($id);

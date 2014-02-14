@@ -1,18 +1,18 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Tests\Utils;
+namespace Giosh94mhz\GeonamesBundle\Tests\Import\DownloadAdapter;
 
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
+use Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter;
 
-class CurlDownloadTest extends \PHPUnit_Framework_TestCase
+class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CurlDownload
+     * @var CurlDownloadAdapter
      */
     protected $download;
 
     protected function setUp()
     {
-        $this->download = new CurlDownload();
+        $this->download = new CurlDownloadAdapter();
     }
 
     protected function tearDown()
@@ -22,8 +22,8 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::getDirectory
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::setDirectory
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::getDirectory
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::setDirectory
      */
     public function testDirectory()
     {
@@ -37,8 +37,8 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::getUseCache
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::setUseCache
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::getUseCache
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::setUseCache
      */
     public function testUseCache()
     {
@@ -50,9 +50,9 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::add
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::setProgressFunction
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::download
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::add
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::setProgressFunction
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::download
      */
     public function testDownload()
     {
@@ -82,7 +82,7 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::requestContentLength
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::requestContentLength
      * @depends testDownload
      */
     public function testRequestContentLength(array $in)
@@ -98,7 +98,7 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::download
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::download
      * @depends testRequestContentLength
      */
     public function testCachedDownload(array $in)
@@ -123,7 +123,7 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Utils\CurlDownload::download
+     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::download
      */
     public function testMultiDownload()
     {

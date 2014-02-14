@@ -7,13 +7,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Giosh94mhz\GeonamesBundle\Model\Import\ImportStepBuilder;
 use Giosh94mhz\GeonamesBundle\GeonamesImportEvents;
 use Giosh94mhz\GeonamesBundle\Event\ImportEvent;
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
 use Giosh94mhz\GeonamesBundle\Event\OnProgressEvent;
 use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 use Giosh94mhz\GeonamesBundle\Event\ImportErrorEvent;
 use Giosh94mhz\GeonamesBundle\Event\PostImportEvent;
 use Giosh94mhz\GeonamesBundle\Model\Import\ImportDirector as ImportDirectorInterface;
 use Giosh94mhz\GeonamesBundle\Exception\FailedImportException;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
 
 class ImportDirector implements ImportDirectorInterface
 {
@@ -25,7 +25,7 @@ class ImportDirector implements ImportDirectorInterface
 
     protected $builders;
 
-    public function __construct(ObjectManager $om, CurlDownload $downloader)
+    public function __construct(ObjectManager $om, DownloadAdapter $downloader)
     {
         $this->om = $om;
         $this->downloader = $downloader;

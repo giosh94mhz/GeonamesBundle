@@ -5,10 +5,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Giosh94mhz\GeonamesBundle\Entity\Toponym;
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
-use Giosh94mhz\GeonamesBundle\Utils\ZipReader;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\ZipReader;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidFeature;
-use Giosh94mhz\GeonamesBundle\Utils\ChainedReader;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\ChainedReader;
 use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 
 /**
@@ -111,7 +111,7 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
         return $this;
     }
 
-    public function download(CurlDownload $download)
+    public function download(DownloadAdapter $download)
     {
         $this->files = array();
         foreach ($this->getSourcesList() as $url)

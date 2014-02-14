@@ -1,7 +1,5 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Import;
-
-use Giosh94mhz\GeonamesBundle\Utils\TxtReader;
+namespace Giosh94mhz\GeonamesBundle\Import\FileReader;
 
 class ContinentReader extends TxtReader
 {

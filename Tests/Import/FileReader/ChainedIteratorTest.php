@@ -1,7 +1,7 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Tests\Utils;
+namespace Giosh94mhz\GeonamesBundle\Tests\Import\FileReader;
 
-use Giosh94mhz\GeonamesBundle\Utils\ChainedIterator;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\ChainedIterator;
 
 class ChainedIteratorTest extends \PHPUnit_Framework_TestCase
 {

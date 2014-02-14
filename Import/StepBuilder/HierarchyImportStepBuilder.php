@@ -2,10 +2,9 @@
 namespace Giosh94mhz\GeonamesBundle\Import\StepBuilder;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Giosh94mhz\GeonamesBundle\Import\StepBuilder\AbstractImportStepBuilder;
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
 use Giosh94mhz\GeonamesBundle\Exception\MissingToponymException;
-use Giosh94mhz\GeonamesBundle\Utils\ZipReader;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\ZipReader;
 use Giosh94mhz\GeonamesBundle\Entity\HierarchyLink;
 
 /**
@@ -49,7 +48,7 @@ class HierarchyImportStepBuilder extends AbstractImportStepBuilder
         $this->countryCodes = $countryCodes;
     }
 
-    public function download(CurlDownload $download)
+    public function download(DownloadAdapter $download)
     {
         $this->file = $download->add(self::GEONAME_DUMP_URL . 'hierarchy.zip');
     }

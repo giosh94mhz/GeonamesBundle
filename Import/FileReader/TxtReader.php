@@ -1,5 +1,5 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Utils;
+namespace Giosh94mhz\GeonamesBundle\Import\FileReader;
 
 class TxtReader implements FileReader
 {

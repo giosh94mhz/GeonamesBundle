@@ -1,11 +1,9 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Model\Import;
 
-use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
-
 interface ImportStepBuilder
 {
-    public function download(CurlDownload $download);
+    public function download(DownloadAdapter $download);
 
     public function getClass();
 

@@ -3,8 +3,8 @@ namespace Giosh94mhz\GeonamesBundle\Tests\Import;
 
 use Giosh94mhz\GeonamesBundle\GeonamesImportEvents;
 use Giosh94mhz\GeonamesBundle\Import\ImportDirector;
-use Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder;
-use Giosh94mhz\GeonamesBundle\Utils\TxtReader;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\TxtReader;
+
 
 class ImportDirectorTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class ImportDirectorTest extends \PHPUnit_Framework_TestCase
     {
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->downloader = $this->getMock('Giosh94mhz\GeonamesBundle\Utils\CurlDownload');
+        $this->downloader = $this->getMock('Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter');
 
         $this->downloader->expects($this->any())
             ->method('getDirectory')

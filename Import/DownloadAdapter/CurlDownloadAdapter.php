@@ -1,13 +1,14 @@
 <?php
 
-namespace Giosh94mhz\GeonamesBundle\Utils;
+namespace Giosh94mhz\GeonamesBundle\Import\DownloadAdapter;
 
 use Giosh94mhz\GeonamesBundle\Exception\ExtensionNotLoadedException;
+use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
 
 /**
  * @author Premi Giorgio <giosh94mz@gmail.com>
  */
-class CurlDownload
+class CurlDownloadAdapter implements DownloadAdapter
 {
     private static $partSuffix = '.part';
 
