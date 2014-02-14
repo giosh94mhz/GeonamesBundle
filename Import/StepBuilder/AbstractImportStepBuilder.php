@@ -10,6 +10,8 @@ use Giosh94mhz\GeonamesBundle\Model\Import\ImportStepBuilder;
  */
 abstract class AbstractImportStepBuilder implements ImportStepBuilder
 {
+    const GEONAME_DUMP_URL = 'http://download.geonames.org/export/dump/';
+
     protected $dispatcher;
 
     public function getDispatcher()

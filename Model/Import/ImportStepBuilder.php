@@ -5,8 +5,6 @@ use Giosh94mhz\GeonamesBundle\Utils\CurlDownload;
 
 interface ImportStepBuilder
 {
-    const GEONAME_DUMP_URL = 'http://download.geonames.org/export/dump/';
-
     public function download(CurlDownload $download);
 
     public function getClass();
