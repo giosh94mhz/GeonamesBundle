@@ -133,7 +133,7 @@ class CurlDownloadTest extends \PHPUnit_Framework_TestCase
         $this->download->setUseCache(false);
         $this->download->setDirectory($directory);
 
-        foreach (array('com', 'org', 'it') as $tld) {
+        foreach (array('com', 'org', 'net') as $tld) {
             $filename = tempnam($directory, 'unitest-geonames-');
             $filenames[] = $this->download->add("http://www.example.{$tld}/", $filename);
         }

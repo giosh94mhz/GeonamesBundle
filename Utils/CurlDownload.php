@@ -238,7 +238,7 @@ class CurlDownload
 
             while ( ($mInfo = curl_multi_info_read($mh)) ) {
                 if( $mInfo['result'] != CURLE_OK )
-                    throw new \Exception('TODO: curl_multi_info_read result != CURLE_OK');
+                    throw new \Exception('curl_multi_info_read result != CURLE_OK.');
 
                 $httpCode = curl_getinfo($mInfo['handle'], CURLINFO_HTTP_CODE);
                 $result = array(
