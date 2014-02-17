@@ -5,6 +5,7 @@
     <parameters>
         <!-- configuration -->
         <parameter key="giosh94mhz_geonames.download.directory"/>
+        <parameter key="giosh94mhz_geonames.download.adapter"/>
 
         <parameter key="giosh94mhz_geonames.feature.locale"/>
         <parameter key="giosh94mhz_geonames.feature.include" type="collection"/>
@@ -24,7 +25,8 @@
         <parameter key="giosh94mhz_geonames.hierarchy.enabled"/>
 
         <!-- internals -->
-        <parameter key="giosh94mhz_geonames.import.download_adapter.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter</parameter>
+        <parameter key="giosh94mhz_geonames.import.download_adapter.curl.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter</parameter>
+        <parameter key="giosh94mhz_geonames.import.download_adapter.guzzle.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\GuzzleDownloadAdapter</parameter>
         <parameter key="giosh94mhz_geonames.import.director.class">Giosh94mhz\GeonamesBundle\Import\ImportDirector</parameter>
         <parameter key="giosh94mhz_geonames.import.step.feature.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.language.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\LanguageImportStepBuilder</parameter>
@@ -44,7 +46,7 @@
             <tag name="monolog.logger" channel="giosh94mhz_geonames" />
         </service>
 
-        <service id="giosh94mhz_geonames.import.download_adapter" class="%giosh94mhz_geonames.import.download_adapter.class%" lazy="true" public="false">
+        <service id="giosh94mhz_geonames.import.download_adapter" class="%giosh94mhz_geonames.download.adapter%" lazy="true" public="false">
             <call method="setDirectory">
                 <argument>%giosh94mhz_geonames.download.directory%</argument>
             </call>

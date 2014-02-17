@@ -38,7 +38,6 @@ class Giosh94mhzGeonamesExtension extends Extension
     {
         // only if doctrine
         $loader->load('doctrine.xml');
-
     }
 
     private function setConfigurationParameters(array $config, ContainerBuilder $container, XmlFileLoader $loader)
@@ -57,6 +56,11 @@ class Giosh94mhzGeonamesExtension extends Extension
         $container->setParameter(
             'giosh94mhz_geonames.download.directory',
             rtrim($config['download']['directory'], DIRECTORY_SEPARATOR)
+        );
+
+        $container->setParameter(
+            'giosh94mhz_geonames.download.adapter',
+            $container->getParameter("giosh94mhz_geonames.import.download_adapter.{$config['download']['adapter']}.class")
         );
 
         /*

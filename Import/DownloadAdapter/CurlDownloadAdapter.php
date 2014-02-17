@@ -3,12 +3,11 @@
 namespace Giosh94mhz\GeonamesBundle\Import\DownloadAdapter;
 
 use Giosh94mhz\GeonamesBundle\Exception\ExtensionNotLoadedException;
-use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
 
 /**
  * @author Premi Giorgio <giosh94mz@gmail.com>
  */
-class CurlDownloadAdapter implements DownloadAdapter
+class CurlDownloadAdapter extends AbstractDownloadAdapter
 {
     private static $partSuffix = '.part';
 
@@ -16,33 +15,17 @@ class CurlDownloadAdapter implements DownloadAdapter
     private $files;
     private $downloadsSize;
 
-    private $directory;
     private $useCache;
-
-    private $progressFunction;
 
     public function __construct()
     {
         $this->channels = array();
         $this->files = array();
         $this->useCache = true;
-        $this->directory = null;
 
         if (! function_exists('curl_init')) {
             throw new ExtensionNotLoadedException('cURL has to be enabled.');
         }
-    }
-
-    public function getDirectory()
-    {
-        return $this->directory;
-    }
-
-    public function setDirectory($directory)
-    {
-        $this->directory = $directory;
-
-        return $this;
     }
 
     public function getUseCache()
@@ -62,7 +45,7 @@ class CurlDownloadAdapter implements DownloadAdapter
         $this->downloadsSize = null;
 
         if( $destFile === null )
-            $destFile=$this->getDestinationPath($url);
+            $destFile = $this->getDestinationPath($url);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -70,7 +53,7 @@ class CurlDownloadAdapter implements DownloadAdapter
 
         $mtime = null;
         if ($this->useCache) {
-            if ( ($mtime=@filemtime($destFile)) ) {
+            if ( ($mtime = @filemtime($destFile)) ) {
                 curl_setopt($ch, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
                 curl_setopt($ch, CURLOPT_TIMEVALUE, $mtime);
             }
@@ -122,32 +105,25 @@ class CurlDownloadAdapter implements DownloadAdapter
      */
     public function download()
     {
-        $progressFunction=null;
+        $progressFunctions = null;
 
-        if ($this->progressFunction) {
-            $files = $this->files;
-            $function = $this->progressFunction;
-            $partialSizes = array();
-            $totalSize = $this->requestContentLength();
+        if ($this->getProgressFunction()) {
+            $init = array_fill(0, count($this->files), 0);
+            foreach ($this->files as $i => $file)
+                $init[$i] = $file['downloaded'];
 
-            $progressFunction = function ($i, $partial) use (&$function, &$files, $totalSize, &$partialSizes) {
-                $partialSizes[$i] = $files[$i]['downloaded'] + $partial;
-                call_user_func($function, $totalSize, min(array_sum($partialSizes), $totalSize));
-            };
+            $progressFunctions = $this->createProgressFunctions($init);
         }
 
         foreach ($this->channels as $i => $ch) {
-
             curl_setopt($ch, CURLOPT_FILE, $this->openPartFile($this->files[$i]) );
 
             if( $this->files[$i]['downloaded'] )
                 curl_setopt($ch, CURLOPT_RANGE, $this->files[$i]['downloaded'] . '-');
 
-            if ($progressFunction) {
+            if ($progressFunctions) {
                 curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-                curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function ($total, $partial) use ($i, $progressFunction) {
-                    call_user_func($progressFunction, $i, $partial);
-                });
+                curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, $progressFunctions[$i]);
             }
         }
 
@@ -170,11 +146,6 @@ class CurlDownloadAdapter implements DownloadAdapter
         }
 
         $this->clear();
-
-        /*
-         * TODO: Results should be formalized and the returned to the caller
-         */
-        // return $results;
     }
 
     private function openPartFile(&$file)
@@ -226,7 +197,7 @@ class CurlDownloadAdapter implements DownloadAdapter
 
     protected function curlMultiDownload(array $chs)
     {
-        $mh=curl_multi_init();
+        $mh = curl_multi_init();
 
         foreach ($chs as $ch) {
             curl_multi_add_handle($mh, $ch);
@@ -263,27 +234,5 @@ class CurlDownloadAdapter implements DownloadAdapter
         curl_multi_close($mh);
 
         return $results;
-    }
-
-    /**
-     * Set a callback for download progress.
-     *
-     * @param Closure $progressFunction Two params are required: $download_size, $downloaded
-     *
-     * @return string
-     */
-    public function setProgressFunction(\Closure $progressFunction)
-    {
-        $this->progressFunction = $progressFunction;
-
-        return $this;
-    }
-
-    private function getDestinationPath($url)
-    {
-        $dir = $this->directory ?: getcwd();
-        $parts = explode('?', $url, 2);
-
-        return rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . basename($parts[0]);
     }
 }
