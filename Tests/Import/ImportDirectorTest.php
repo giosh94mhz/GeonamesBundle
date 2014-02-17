@@ -5,7 +5,6 @@ use Giosh94mhz\GeonamesBundle\GeonamesImportEvents;
 use Giosh94mhz\GeonamesBundle\Import\ImportDirector;
 use Giosh94mhz\GeonamesBundle\Import\FileReader\TxtReader;
 
-
 class ImportDirectorTest extends \PHPUnit_Framework_TestCase
 {
     private $om;

@@ -7,7 +7,6 @@ use Guzzle\Plugin\Cache\CachePlugin;
 use Guzzle\Plugin\Cache\DefaultCacheStorage;
 use Guzzle\Cache\DoctrineCacheAdapter;
 use Doctrine\Common\Cache\FilesystemCache;
-use Guzzle\Common\Event;
 
 class GuzzleDownloadAdapter extends AbstractDownloadAdapter
 {
@@ -53,6 +52,7 @@ class GuzzleDownloadAdapter extends AbstractDownloadAdapter
             'url' => $url,
             'file' => $destFile
         );
+
         return $destFile;
     }
 

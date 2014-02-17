@@ -30,7 +30,6 @@ class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         @rmdir(self::$directory);
     }
 
-
     protected function setUp()
     {
         $client = new Client();
@@ -75,7 +74,6 @@ class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame(false, $size);
 
         // $this->assertEquals($outTotal, $outPartial); // MockPlugin don't call curl, so no progress
-
         return array( $filename, $size );
     }
 }
