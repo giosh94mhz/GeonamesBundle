@@ -14,6 +14,7 @@ use Giosh94mhz\GeonamesBundle\Event\PostImportEvent;
 use Giosh94mhz\GeonamesBundle\Model\Import\ImportDirector as ImportDirectorInterface;
 use Giosh94mhz\GeonamesBundle\Exception\FailedImportException;
 use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
+use Giosh94mhz\GeonamesBundle\Event\PreImportEvent;
 
 class ImportDirector implements ImportDirectorInterface
 {
@@ -54,7 +55,7 @@ class ImportDirector implements ImportDirectorInterface
     public function import()
     {
         if ($this->dispatcher)
-            $this->dispatcher->dispatch(GeonamesImportEvents::PRE_IMPORT, new ImportEvent());
+            $this->dispatcher->dispatch(GeonamesImportEvents::PRE_IMPORT, new PreImportEvent());
 
         $this->download();
 
@@ -72,8 +73,11 @@ class ImportDirector implements ImportDirectorInterface
 
     private function importStep(ImportStepBuilder $builder, &$totSynced, &$totSkipped, &$totErrors)
     {
-        if ($this->dispatcher)
-            $this->dispatcher->dispatch(GeonamesImportEvents::PRE_IMPORT_STEP, new ImportEvent());
+        if ($this->dispatcher) {
+            $event = new PreImportEvent();
+            $event->setBuilder($builder);
+            $this->dispatcher->dispatch(GeonamesImportEvents::PRE_IMPORT_STEP, $event);
+        }
 
         $synced = $skipped = $errors = 0;
 

@@ -7,6 +7,7 @@ use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Giosh94mhz\GeonamesBundle\GeonamesImportEvents;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Giosh94mhz\GeonamesBundle\Model\Import\ImportStepBuilder;
 
 class ImportOutputSubscriber implements EventSubscriberInterface
 {
@@ -18,8 +19,6 @@ class ImportOutputSubscriber implements EventSubscriberInterface
     private $progress;
 
     private $onProgress;
-
-    private $stepCounter;
 
     public static function getSubscribedEvents()
     {
@@ -42,7 +41,6 @@ class ImportOutputSubscriber implements EventSubscriberInterface
         $this->output = $output;
         $this->progress = $progress;
         $this->onProgress = false;
-        $this->stepCounter = 0;
     }
 
     public function getLogger()
@@ -69,7 +67,7 @@ class ImportOutputSubscriber implements EventSubscriberInterface
         return $this;
     }
 
-    public function preImport(ImportEvent $event)
+    public function preImport(PreImportEvent $event)
     {
         $this->output->writeln("<info>Geonames import started</info>");
         if ($this->stopWatch)
@@ -100,13 +98,15 @@ class ImportOutputSubscriber implements EventSubscriberInterface
         $this->output->writeln("<info>...download completed.</info>");
     }
 
-    public function preImportStep(ImportEvent $event)
+    public function preImportStep(PreImportEvent $event)
     {
-        ++ $this->stepCounter;
         $this->finish();
         if ($this->stopWatch)
             $this->stopWatch->start('geonamesImportStep');
-        $this->output->writeln("<info>Step {$this->stepCounter}</info>");
+
+        $name = $this->getBuilderName($event->getBuilder());
+
+        $this->output->writeln("<info>Import {$name}</info>");
     }
 
     public function onImportProgress(OnProgressEvent $event)
@@ -183,5 +183,14 @@ class ImportOutputSubscriber implements EventSubscriberInterface
                 OutputInterface::OUTPUT_NORMAL
             );
         }
+    }
+
+    private function getBuilderName(ImportStepBuilder $builder)
+    {
+        return preg_replace(
+            '/^Giosh94mhz\\\\GeonamesBundle\\\\Import\\\\StepBuilder\\\\(\\w+)ImportStepBuilder$/',
+            '$1',
+            get_class($builder)
+        );
     }
 }
