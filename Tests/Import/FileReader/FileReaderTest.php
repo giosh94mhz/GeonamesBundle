@@ -35,8 +35,6 @@ class FileReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Model\FileReader\FileReader::open
-     * @covers Giosh94mhz\GeonamesBundle\Model\FileReader\FileReader::close
      * @dataProvider readerProvider
      */
     public function testOpenClose($reader, $firstValue)
@@ -49,8 +47,6 @@ class FileReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Model\FileReader\FileReader::count
-     * @covers Giosh94mhz\GeonamesBundle\Model\FileReader\FileReader::getIterator
      * @dataProvider readerProvider
      */
     public function testIterate($reader, $firstValue)

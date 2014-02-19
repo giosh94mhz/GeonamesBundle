@@ -21,10 +21,6 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         $this->download = null;
     }
 
-    /**
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::getDirectory
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::setDirectory
-     */
     public function testDirectory()
     {
         $filename = 'unitest-geonames-' . mt_rand(1000000, 9999999);
@@ -36,10 +32,6 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($dir . $filename, $this->download->add('http://www.example.com/'.$filename));
     }
 
-    /**
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::getUseCache
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::setUseCache
-     */
     public function testUseCache()
     {
         $this->assertEquals($this->download, $this->download->setUseCache(true));
@@ -49,11 +41,6 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $this->download->getUseCache());
     }
 
-    /**
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::add
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::setProgressFunction
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::download
-     */
     public function testDownload()
     {
         $filename = tempnam(sys_get_temp_dir(), 'unitest-geonames-');
@@ -82,7 +69,6 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::requestContentLength
      * @depends testDownload
      */
     public function testRequestContentLength(array $in)
@@ -98,7 +84,6 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::download
      * @depends testRequestContentLength
      */
     public function testCachedDownload(array $in)
@@ -122,9 +107,6 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         unlink($filename);
     }
 
-    /**
-     * @covers Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter::download
-     */
     public function testMultiDownload()
     {
         $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
