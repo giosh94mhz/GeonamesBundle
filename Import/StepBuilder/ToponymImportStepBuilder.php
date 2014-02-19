@@ -26,8 +26,6 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
     private $features;
     private $forcedFeatures;
 
-    private $completeScan;
-
     private $countryCodes;
     private $cityPopulation;
 
