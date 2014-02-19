@@ -152,6 +152,11 @@ class Giosh94mhzGeonamesExtension extends Extension
         );
 
         $container->setParameter(
+            'giosh94mhz_geonames.alternate_names.enabled',
+            $config['alternate_names']['enabled']
+        );
+
+        $container->setParameter(
             'giosh94mhz_geonames.hierarchy.enabled',
             $config['hierarchy']['enabled']
         );
