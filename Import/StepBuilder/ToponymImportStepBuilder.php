@@ -121,7 +121,7 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
         $baseUrl = self::GEONAME_DUMP_URL;
         $sources = array();
 
-        if ($this->forcedFeatures
+        if (($this->forcedFeatures && ! $this->forcedFeatures->isEmpty())
             || (empty($this->countryCodes) && !$this->cityPopulation)
             || $this->cityPopulation && $this->cityPopulation < self::CITY_SMALL
         ) {
