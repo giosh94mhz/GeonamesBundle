@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Giosh94mhz\GeonamesBundle\Entity\Toponym" table="geoname">
+  <entity name="Giosh94mhz\GeonamesBundle\Entity\Toponym" table="geoname" repository-class="Giosh94mhz\GeonamesBundle\Repository\ToponymRepository">
     <id name="id" type="integer" column="geoname_id">
       <generator strategy="NONE"/>
       <options><option name="unsigned">true</option></options>

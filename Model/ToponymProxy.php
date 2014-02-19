@@ -1,6 +1,17 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Model;
 
+/**
+ * Proxy class to use toponym property as a base class.
+ *
+ * This trick is required to avoid two problems when importing toponym:
+ *   * avoid a discriminator column on toponym (feature is a good
+ *     candidate, but not directly supported by Doctrine syntax)
+ *   * avoid "downcasting" of previously imported generic toponym
+ *     instances
+ *
+ * @author giosh
+ */
 class ToponymProxy implements Toponym
 {
     /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Giosh94mhz\GeonamesBundle\Entity\Admin1" table="admin1">
+  <entity name="Giosh94mhz\GeonamesBundle\Entity\Admin1" table="admin1" repository-class="Giosh94mhz\GeonamesBundle\Repository\ToponymProxyRepository">
     <id name="toponym" column="geoname_id" association-key="true"/>
     <one-to-one field="toponym" target-entity="Toponym">
       <cascade>
