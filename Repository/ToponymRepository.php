@@ -83,7 +83,7 @@ class ToponymRepository extends EntityRepository implements ToponymRepositoryInt
 
     protected function createToponymQueryBuilder(array $extraSelects = array())
     {
-        array_unshift('toponym', $extraSelects);
+        array_unshift($extraSelects, 'toponym');
 
         return $this->createQueryBuilder('toponym')->select($extraSelects);
     }
