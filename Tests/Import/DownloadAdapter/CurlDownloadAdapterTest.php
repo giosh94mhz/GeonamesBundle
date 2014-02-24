@@ -73,7 +73,7 @@ class CurlDownloadAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequestContentLength(array $in)
     {
-        list( $filename, $size ) = $in;
+        list($filename, $size) = $in;
 
         $this->download->setUseCache(false);
         $this->download->add('http://www.example.com/', $filename);

@@ -10,7 +10,6 @@ use Giosh94mhz\GeonamesBundle\Model\Feature;
 
 class ResultAdapter extends AbstractResult implements ResultInterface
 {
-
     protected $toponym;
 
     protected $loader;
@@ -26,6 +25,11 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     public function setToponym(Toponym $toponym)
     {
         $this->toponym = $toponym;
+    }
+
+    public function getToponym()
+    {
+        return $this->toponym;
     }
 
     public function setLoaderClosure(\Closure $loader)
@@ -70,7 +74,7 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     {
         $feature = $this->toponym->getFeature();
 
-        return ($feature->getClass() === 'P' && substr($feature->getCode(), 0, 2) !== 'PC' ) ? $this->toponym->getName() : null;
+        return $feature->getClass() === 'P' ? $this->toponym->getName() : null;
     }
 
     public function getZipcode()
@@ -125,14 +129,12 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     public function fromArray(array $data = array())
     {
         if (! isset($data['geonameid']))
-            throw new InvalidArgumentException('Toponym cannot be loaded fromArray. ' . 'Parameters must contain the geonameid.');
+            throw new InvalidArgumentException('Toponym cannot be loaded fromArray. Parameters must contain the geonameid.');
 
         if (isset($data['toponym']) && $data['toponym']->getId() == $data['geonameid']) {
             $this->toponym = $data['toponym'];
-        } elseif ($this->loader) {
-            $this->toponym = $this->loader($data['geonameid']);
         } else {
-            throw new InvalidArgumentException('Toponym cannot be loaded fromArray. ' . 'The toponym is not preloaded, and there is no loader callback.');
+            $this->toponym = call_user_func($this->loader, $data['geonameid']);
         }
     }
 

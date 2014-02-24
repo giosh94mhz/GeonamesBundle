@@ -470,7 +470,7 @@ class Toponym implements ToponymInterface
      */
     public function getTimezone()
     {
-        return new \DateTimeZone($this->timezone);
+        return $this->timezone ? new \DateTimeZone($this->timezone) : null;
     }
 
     /**

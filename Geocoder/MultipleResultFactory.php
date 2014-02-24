@@ -4,9 +4,9 @@ namespace Giosh94mhz\GeonamesBundle\Geocoder;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
 use Giosh94mhz\GeonamesBundle\Model\Toponym;
 use Doctrine\Common\Persistence\ObjectManager;
-use Geocoder\Result\DefaultResultFactory;
+use Geocoder\Result\MultipleResultFactory as GeocoderMultipleResultFactory;
 
-class ResultFactory extends DefaultResultFactory
+class MultipleResultFactory extends GeocoderMultipleResultFactory
 {
     protected $loader;
 
