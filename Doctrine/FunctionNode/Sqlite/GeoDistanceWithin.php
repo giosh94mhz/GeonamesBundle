@@ -1,5 +1,5 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Doctrine\MySql;
+namespace Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
@@ -13,19 +13,8 @@ use Giosh94mhz\GeonamesBundle\Model\Measure;
  *
  * @author Premi Giorgio <giosh94mhz@gmail.com>
  */
-class GeoDistanceWithin extends FunctionNode
+class GeoDistanceWithin extends GeoDistance
 {
-    const EARTH_RADIUS_KM = 6371.;
-    const KM_RADIANS = 111.;
-
-    protected $latOrigin;
-
-    protected $lonOrigin;
-
-    protected $latPoint;
-
-    protected $lonPoint;
-
     protected $distance;
 
     public function parse(Parser $parser)
@@ -46,16 +35,8 @@ class GeoDistanceWithin extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
-        // Haversine Formula <= distance
         return sprintf(
-            '(%F * ASIN(SQRT(POWER(SIN((%s - %s) * PI()/360), 2)+ COS(%s * PI()/180) * COS(%s * PI()/180) * POWER(SIN((%s - %s) * PI()/360), 2)))) <= %s',
-            Measure::EARTH_RADIUS_KM * 2.,
-            $sqlWalker->walkArithmeticPrimary($this->latOrigin),
-            $sqlWalker->walkArithmeticPrimary($this->latPoint),
-            $sqlWalker->walkArithmeticPrimary($this->latOrigin),
-            $sqlWalker->walkArithmeticPrimary($this->latPoint),
-            $sqlWalker->walkArithmeticPrimary($this->lonOrigin),
-            $sqlWalker->walkArithmeticPrimary($this->lonPoint),
+            $formula = '(' . parent::getSql($sqlWalker) . ') <= %F',
             $sqlWalker->walkArithmeticPrimary($this->distance)
         );
     }

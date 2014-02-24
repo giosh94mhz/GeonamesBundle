@@ -1,5 +1,5 @@
 <?php
-namespace Giosh94mhz\GeonamesBundle\Doctrine\MySql;
+namespace Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
