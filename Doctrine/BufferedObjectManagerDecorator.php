@@ -4,13 +4,13 @@ namespace Giosh94mhz\GeonamesBundle\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class BulkInsertObjectManagerDecorator implements ObjectManager
+class BufferedObjectManagerDecorator implements ObjectManager
 {
     const DEFAULT_BUFFER_SIZE = 100;
 
     protected $em;
 
-    protected $entityBuffer;
+    protected $objectBuffer;
 
     protected $maxBufferSize;
 
@@ -21,7 +21,7 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->entityBuffer = array();
+        $this->objectBuffer = array();
         $this->bufferSize = 0;
         $this->maxBufferSize = self::DEFAULT_BUFFER_SIZE;
         $this->onTransactionalFlush = false;
@@ -39,7 +39,7 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
 
     public function setMaxBufferSize($maxBufferSize)
     {
-        $this->maxBufferSize = intval($maxBufferSize) ?  : self::DEFAULT_BUFFER_SIZE;
+        $this->maxBufferSize = intval($maxBufferSize) ?: self::DEFAULT_BUFFER_SIZE;
 
         if ($this->bufferSize >= $this->maxBufferSize)
             $this->flush();
@@ -52,41 +52,51 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
         return $this->em->find($className, $id);
     }
 
-    public function persist($entity)
+    public function persist($object)
     {
-        $this->entityBuffer[] = $entity;
+        $this->em->persist($object);
 
-        $this->em->persist($entity);
-
-        ++ $this->bufferSize;
-        if ($this->bufferSize >= $this->maxBufferSize)
-            $this->flush();
+        $this->buffer($object);
     }
 
     public function remove($object)
     {
         $this->em->remove($object);
+
+        $this->buffer($object);
     }
 
     public function merge($object)
     {
-        return $this->em->merge($object);
+        $managed = $this->em->merge($object);
+
+        $this->buffer($managed);
+
+        return $managed;
+
     }
 
     public function clear($objectName = null)
     {
         $this->em->clear($objectName);
+
+        foreach ($this->objectBuffer as $object)
+            if ($object instanceof $objectName)
+                $this->unbuffer($object);
     }
 
     public function detach($object)
     {
         $this->em->detach($object);
-        // TODO: remove from buffer
+
+        $this->unbuffer($object);
     }
 
     public function refresh($object)
     {
         $this->em->refresh($object);
+
+        $this->unbuffer($object);
     }
 
     public function flush()
@@ -112,11 +122,11 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
     private function realFlush()
     {
         // flush and forget
-        $this->em->flush($this->entityBuffer);
-        foreach ($this->entityBuffer as $entity)
-            $this->em->detach($entity);
+        $this->em->flush($this->objectBuffer);
+        foreach ($this->objectBuffer as $object)
+            $this->em->detach($object);
 
-        $this->entityBuffer = array();
+        $this->objectBuffer = array();
         $this->bufferSize = 0;
     }
 
@@ -135,13 +145,41 @@ class BulkInsertObjectManagerDecorator implements ObjectManager
         return $this->em->getMetadataFactory();
     }
 
-    public function initializeObject($obj)
+    public function initializeObject($object)
     {
-        return $this->em->initializeObject($obj);
+        $this->em->initializeObject($object);
     }
 
     public function contains($object)
     {
         return $this->em->contains($object);
+    }
+
+    private function getKey($object)
+    {
+        return array_search($object, $this->objectBuffer, true);
+    }
+
+    private function buffer($object)
+    {
+        $key = $this->getKey($object);
+        if ($key !== false)
+            return;
+
+        $this->objectBuffer[] =  $object;
+
+        ++ $this->bufferSize;
+        if ($this->bufferSize >= $this->maxBufferSize)
+            $this->flush();
+    }
+
+    private function unbuffer($object)
+    {
+        $key = $this->getKey($object);
+        if ($key === false)
+            return;
+
+        unset($this->objectBuffer[$key]);
+        -- $this->bufferSize;
     }
 }

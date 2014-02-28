@@ -4,7 +4,7 @@
 
     <parameters>
         <parameter key="giosh94mhz_geonames.orm.object_manager_name">default</parameter>
-        <parameter key="giosh94mhz_geonames.orm.object_manager_decorator.class">Giosh94mhz\GeonamesBundle\Doctrine\BulkInsertObjectManagerDecorator</parameter>
+        <parameter key="giosh94mhz_geonames.orm.object_manager_decorator.class">Giosh94mhz\GeonamesBundle\Doctrine\BufferedObjectManagerDecorator</parameter>
         <parameter key="giosh94mhz_geonames.orm.object_manager_real.class">Doctrine\ORM\EntityManager</parameter>
         <parameter key="giosh94mhz_geonames.orm.feature.class">Giosh94mhz\GeonamesBundle\Entity\Feature</parameter>
         <parameter key="giosh94mhz_geonames.orm.feature_repository.class">Doctrine\ORM\EntityRepository</parameter>
