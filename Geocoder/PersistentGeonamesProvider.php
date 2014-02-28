@@ -100,11 +100,19 @@ DQL;
         }
 
         $data = $this->ipProvider->getGeocodedData($address);
+        if (empty($data))
+            throw new NoResultException();
 
         $backupMaxResults = $this->maxResults;
         $this->maxResults = 1;
 
-        $result = $this->getReversedData(array($data['latitude'], $data['longitude']));
+        try {
+            $result = $this->getReversedData(array($data[0]['latitude'], $data[0]['longitude']));
+
+        } catch (\Exception $e) {
+            $this->maxResults = $backupMaxResults;
+            throw $e;
+        }
 
         $this->maxResults = $backupMaxResults;
 

@@ -76,7 +76,9 @@ class PersistentGeonamesProviderTest extends OrmFunctionalTestCase
             ->expects($this->once())
             ->method('getGeocodedData')
             ->will(
-                $this->returnValue(array('latitude' => 45.46427, 'longitude' => 9.18951))
+                $this->returnValue(array(
+                    array('latitude' => 45.46427, 'longitude' => 9.18951)
+                ))
             )
         ;
 
