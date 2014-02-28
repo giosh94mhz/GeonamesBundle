@@ -5,6 +5,7 @@ use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
+use Giosh94mhz\GeonamesBundle\Model\Measure;
 
 /**
  * Usage: GEO_DISTANCE(latOrigin, lonOrigin, latPoint, lonPoint)
