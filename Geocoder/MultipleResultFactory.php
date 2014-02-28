@@ -1,8 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Geocoder;
 
-use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
-use Giosh94mhz\GeonamesBundle\Model\Toponym;
 use Doctrine\Common\Persistence\ObjectManager;
 use Geocoder\Result\MultipleResultFactory as GeocoderMultipleResultFactory;
 

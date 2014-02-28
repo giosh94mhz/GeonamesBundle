@@ -1,8 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Tests\Geocoder;
 
-use Geocoder\Result\ResultInterface;
-use Geocoder\Result\AbstractResult;
 use Giosh94mhz\GeonamesBundle\Entity\Toponym;
 use Giosh94mhz\GeonamesBundle\Entity\Feature;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
@@ -73,7 +71,6 @@ class ResultAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected[15], $adapter->getTimezone(),     "Wrong Timezone");
     }
 
-
     /**
      * @expectedException InvalidArgumentException
      */
@@ -108,7 +105,7 @@ class ResultAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($toponym->getName(), $adapter->getCity());
 
         $adapter = new ResultAdapter();
-        $adapter->setLoaderClosure(function($id) use ($toponym) {
+        $adapter->setLoaderClosure(function ($id) use ($toponym) {
             return $id == $toponym->getId() ? $toponym : null;
         });
         $adapter->fromArray(array(

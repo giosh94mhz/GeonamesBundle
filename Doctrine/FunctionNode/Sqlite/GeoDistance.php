@@ -2,10 +2,7 @@
 namespace Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite;
 
 use Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\GeoDistance as GeoDistanceBase;
-use Doctrine\ORM\Query\Lexer;
-use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
-use Giosh94mhz\GeonamesBundle\Model\Measure;
 
 /**
  * @author Giorgio Premi <giosh94mhz@gmail.com>

@@ -1,12 +1,9 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Tests\Geocoder;
 
-use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
-use Giosh94mhz\GeonamesBundle\Model\Toponym;
 use Giosh94mhz\GeonamesBundle\Geocoder\ResultFactory;
 use Giosh94mhz\GeonamesBundle\Tests\OrmFunctionalTestCase;
 use Giosh94mhz\GeonamesBundle\Tests\Fixtures\BaseFixture;
-use Giosh94mhz\GeonamesBundle\Geocoder\ResultAdapter;
 
 class ResultFactoryTest extends OrmFunctionalTestCase
 {

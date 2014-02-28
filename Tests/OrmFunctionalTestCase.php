@@ -1,12 +1,10 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Tests;
 
-use Doctrine\Tests\TestUtil;
 use Doctrine\Tests\OrmFunctionalTestCase as DoctrineOrmFunctionalTestCase;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
-use Giosh94mhz\GeonamesBundle\Doctrine\ConfigurePlatform;
 
 /**
  * Basic class for functional database tests
@@ -34,9 +32,11 @@ class OrmFunctionalTestCase extends DoctrineOrmFunctionalTestCase
         ),
     );
 
-    protected function _getEntityManager($config = null, $eventManager = null) {
+    protected function _getEntityManager($config = null, $eventManager = null)
+    {
         $em = parent::_getEntityManager($config, $eventManager);
         $this->emulateBundleBoot($em);
+
         return $em;
     }
 

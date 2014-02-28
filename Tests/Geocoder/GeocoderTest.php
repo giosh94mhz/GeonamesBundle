@@ -95,4 +95,3 @@ class GeocoderTest extends OrmFunctionalTestCase
         return $result;
     }
 }
-

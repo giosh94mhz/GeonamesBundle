@@ -107,6 +107,7 @@ DQL;
         $result = $this->getReversedData(array($data['latitude'], $data['longitude']));
 
         $this->maxResults = $backupMaxResults;
+
         return $result;
     }
 
@@ -133,6 +134,7 @@ DQL;
     public function setIpProvider(ProviderInterface $ipProvider)
     {
         $this->ipProvider = $ipProvider;
+
         return $this;
     }
 

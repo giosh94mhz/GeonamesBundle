@@ -1,8 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Tests\Geocoder;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Geocoder\Exception\NoResultException;
 use Geocoder\Exception\UnsupportedException;
 use Geocoder\Provider\ProviderInterface;
 use Giosh94mhz\GeonamesBundle\Tests\OrmFunctionalTestCase;

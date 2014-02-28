@@ -1,7 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Geocoder;
 
-use Giosh94mhz\GeonamesBundle\Geocoder\ResultAdapter;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidArgumentException;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -30,6 +29,7 @@ class ResultLoader
         $result->setLoaderClosure(function ($geonameid) use ($callback) {
             return call_user_func($callback, $geonameid);
         });
+
         return $result;
     }
 
@@ -43,6 +43,7 @@ class ResultLoader
         $toponym = $this->om->find('Giosh94mhzGeonamesBundle:Toponym', $geonameid);
         if (! $toponym )
             throw new InvalidArgumentException("Cannot load the Toponym with id '{$geonameid}'");
+
         return $toponym;
     }
 }
