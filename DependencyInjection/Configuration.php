@@ -129,6 +129,16 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->canBeEnabled()
                 ->end()
+                ->arrayNode('geocoder')
+                    ->addDefaultsIfNotSet()
+                    ->canBeDisabled()
+                    ->children()
+                        ->scalarNode('ip_provider')
+                            ->info('Name of the Geocoder provider to use to resolve IP addresses')
+                            ->defaultValue(false)
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

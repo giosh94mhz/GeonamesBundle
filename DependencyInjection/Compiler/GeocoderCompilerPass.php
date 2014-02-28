@@ -16,10 +16,28 @@ class GeocoderCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $geocoder = $container->getDefinition('bazinga_geocoder.geocoder');
+        if (! $container->getParameter('giosh94mhz_geonames.geocoder.enabled'))
+            return;
 
-        $geocoder->addMethodCall('setResultFactory',array(
-            new Reference('giosh94mhz_geonames.geocoder.result_factory')
-        ));
+        $geocoder = $container->getDefinition('bazinga_geocoder.geocoder');
+        $geocoder
+            ->addMethodCall('setResultFactory',array(
+                new Reference('giosh94mhz_geonames.geocoder.result_factory')
+            ))
+            ->addMethodCall('using',array(
+                'persistent_geonames'
+            ))
+        ;
+
+        $ipProviderName = $container->getParameter('giosh94mhz_geonames.geocoder.ip_provider');
+        if ($ipProviderName !== null) {
+            $ipProvider = $container->getDefinition('bazinga_geocoder.provider.' . $ipProviderName);
+            $container
+                ->getDefinition('giosh94mhz_geonames.geocoder.persistent_geonames_provider')
+                ->addMethodCall('setIpProvider', array(
+                    $ipProvider
+                ))
+            ;
+        }
     }
 }

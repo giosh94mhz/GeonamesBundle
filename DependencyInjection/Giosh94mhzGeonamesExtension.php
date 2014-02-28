@@ -2,9 +2,9 @@
 
 namespace Giosh94mhz\GeonamesBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
@@ -27,29 +27,23 @@ class Giosh94mhzGeonamesExtension extends Extension
 
         $this->setPersistenceLayer($config, $container, $loader);
 
-        $this->setConfigurationParameters($config, $container, $loader);
-
-        $this->setImportTags($config, $container, $loader);
+        $this->setImportConfig($config, $container, $loader);
 
         $this->setGeocoder($config, $container, $loader);
     }
 
     private function setPersistenceLayer(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        // only if doctrine
-        $loader->load('doctrine.xml');
-    }
-
-    private function setConfigurationParameters(array $config, ContainerBuilder $container, XmlFileLoader $loader)
-    {
-        /*
-         * DATABASE
-         */
         $container->setParameter(
             'giosh94mhz_geonames.orm.object_manager_name',
             $config['orm']['object_manager_name']
         );
 
+        $loader->load('doctrine.xml');
+    }
+
+    private function setImportConfig(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
         /*
          * DOWNLOAD
          */
@@ -160,10 +154,10 @@ class Giosh94mhzGeonamesExtension extends Extension
             'giosh94mhz_geonames.hierarchy.enabled',
             $config['hierarchy']['enabled']
         );
-    }
 
-    private function setImportTags(array $config, ContainerBuilder $container, XmlFileLoader $loader)
-    {
+        /*
+         * IMPORT ALL TAGS
+         */
         if ($config['continent']['enabled'])
             $container->getDefinition('giosh94mhz_geonames.import.step.continent')->addTag('giosh94mhz_geonames.import.all_steps');
         if ($config['country']['enabled'])
@@ -178,6 +172,19 @@ class Giosh94mhzGeonamesExtension extends Extension
 
     private function setGeocoder(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
+        $container->setParameter(
+            'giosh94mhz_geonames.geocoder.enabled',
+            $config['geocoder']['enabled']
+        );
+
+        if(! $config['geocoder']['enabled'])
+            return;
+
         $loader->load('geocoder.xml');
+
+        $container->setParameter(
+            'giosh94mhz_geonames.geocoder.ip_provider',
+            $config['geocoder']['ip_provider']
+        );
     }
 }

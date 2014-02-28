@@ -3,6 +3,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="giosh94mhz_geonames.geocoder.enabled">true</parameter>
         <parameter key="giosh94mhz_geonames.geocoder.persistent_geonames_provider.class">Giosh94mhz\GeonamesBundle\Geocoder\PersistentGeonamesProvider</parameter>
         <parameter key="giosh94mhz_geonames.geocoder.result_factory.class">Giosh94mhz\GeonamesBundle\Geocoder\ResultFactory</parameter>
     </parameters>

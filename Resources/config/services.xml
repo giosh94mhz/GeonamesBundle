@@ -25,6 +25,8 @@
         <parameter key="giosh94mhz_geonames.alternate_names.enabled"/>
         <parameter key="giosh94mhz_geonames.hierarchy.enabled"/>
 
+        <parameter key="giosh94mhz_geonames.geocoder.enabled"/>
+
         <!-- internals -->
         <parameter key="giosh94mhz_geonames.import.download_adapter.curl.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter</parameter>
         <parameter key="giosh94mhz_geonames.import.download_adapter.guzzle.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\GuzzleDownloadAdapter</parameter>
