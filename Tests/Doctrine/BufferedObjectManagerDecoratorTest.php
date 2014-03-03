@@ -82,17 +82,23 @@ class BufferedObjectManagerDecoratorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($merged))
         ;
         $this->assertSame($merged, $this->decorator->merge($object));
+        $this->assertEquals(1, $this->decorator->getBufferSize());
     }
 
     public function testClear()
     {
         $objectName = '\stdClass';
+        $object = new \stdClass();
+        $this->decorator->persist($object);
+        $this->assertEquals(1, $this->decorator->getBufferSize());
+
         $this->em
             ->expects($this->once())
             ->method('clear')
             ->with($objectName)
         ;
         $this->decorator->clear($objectName);
+        $this->assertEquals(0, $this->decorator->getBufferSize());
     }
 
     public function testDetach()
@@ -113,12 +119,16 @@ class BufferedObjectManagerDecoratorTest extends \PHPUnit_Framework_TestCase
     public function testRefresh()
     {
         $object = new \stdClass();
+        $this->decorator->persist($object);
+        $this->assertEquals(1, $this->decorator->getBufferSize());
+
         $this->em
             ->expects($this->once())
             ->method('refresh')
             ->with($object)
         ;
         $this->decorator->refresh($object);
+        $this->assertEquals(0, $this->decorator->getBufferSize());
     }
 
     public function testFlush()
@@ -165,7 +175,7 @@ class BufferedObjectManagerDecoratorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($repository, $this->decorator->getRepository($className));
     }
 
-    public function getClassMetadata()
+    public function testGetClassMetadata()
     {
         $className = '\stdClass';
         $metadata = new \stdClass();
@@ -173,12 +183,12 @@ class BufferedObjectManagerDecoratorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getClassMetadata')
             ->with($className)
-            ->will($this->returnValue($repository))
+            ->will($this->returnValue($metadata))
         ;
         $this->assertSame($metadata, $this->decorator->getClassMetadata($className));
     }
 
-    public function getMetadataFactory()
+    public function testGetMetadataFactory()
     {
         $metadataFactory = new \stdClass();
         $this->em
@@ -210,5 +220,17 @@ class BufferedObjectManagerDecoratorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true))
         ;
         $this->assertTrue($this->decorator->contains($object));
+    }
+
+    public function testMagicCall()
+    {
+        $object = new \stdClass();
+        $this->em
+            ->expects($this->once())
+            ->method('copy')
+            ->with($object)
+            ->will($this->returnValue(new \stdClass()))
+        ;
+        $this->assertNotSame($object, $this->decorator->copy($object));
     }
 }

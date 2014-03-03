@@ -182,4 +182,9 @@ class BufferedObjectManagerDecorator implements ObjectManager
         unset($this->objectBuffer[$key]);
         -- $this->bufferSize;
     }
+
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array(array($this->em, $name), $arguments);
+    }
 }
