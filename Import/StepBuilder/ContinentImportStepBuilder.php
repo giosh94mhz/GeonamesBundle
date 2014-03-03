@@ -2,10 +2,10 @@
 namespace Giosh94mhz\GeonamesBundle\Import\StepBuilder;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Giosh94mhz\GeonamesBundle\Entity\Toponym;
 use Giosh94mhz\GeonamesBundle\Entity\Continent;
 use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
-use Giosh94mhz\GeonamesBundle\Entity\Toponym;
-use Giosh94mhz\GeonamesBundle\Import\ContinentReader;
+use Giosh94mhz\GeonamesBundle\Import\FileReader\ContinentReader;
 
 /**
  *
