@@ -35,7 +35,7 @@ class GeoDistanceWithin extends GeoDistance
     public function getSql(SqlWalker $sqlWalker)
     {
         return sprintf(
-            $formula = '(' . parent::getSql($sqlWalker) . ') <= %F',
+            $formula = '(' . parent::getSql($sqlWalker) . ') <= %s',
             $sqlWalker->walkArithmeticPrimary($this->distance)
         );
     }
