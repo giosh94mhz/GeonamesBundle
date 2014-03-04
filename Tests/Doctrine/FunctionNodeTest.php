@@ -113,7 +113,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
             'SELECT STD_LONGITUDE_WITHIN(1.1, 1.2, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
         )->setMaxResults(1);
 
-        $expected = 'SELECT 1.1 BETWEEN 2.1 - 3.0 / ABS(COS(1.2)) * 111.%d AND 2.1 + 3.0 / ABS(COS(1.2)) * 111.%d AS %W FROM geoname %W LIMIT 1';
+        $expected = 'SELECT 1.1 BETWEEN 2.1 - 3.0 / ABS(COS(1.2) * 111.%d) AND 2.1 + 3.0 / ABS(COS(1.2) * 111.%d) AS %W FROM geoname %W LIMIT 1';
         $this->assertRegExp($this->createPatternFromFormat($expected), $q->getSQL());
     }
 
@@ -227,27 +227,33 @@ DQL;
     {
         $this->loadFixtures();
 
-        // Rome 12.4839±15km => with latitude [12.3455,12.62231], w/o latitude [12.3488,12.6190]
+        // Rome 12.4839±15km => w/o latitude [12.34876,12.61904]
         $DQL = <<<DQL
             SELECT
-                LONGITUDE_WITHIN(t.longitude, 12.0, 15) as isNotWithin,
-                LONGITUDE_WITHIN(t.longitude, 12.5, 15) as isWithin
+                LONGITUDE_WITHIN(t.longitude, 12.34875, 15) as isNotWithinMin,
+                LONGITUDE_WITHIN(t.longitude, 12.34877, 15) as isWithinMin,
+                LONGITUDE_WITHIN(t.longitude, 12.61903, 15) as isWithinMax,
+                LONGITUDE_WITHIN(t.longitude, 12.61905, 15) as isNotWithinMax
             FROM Giosh94mhzGeonamesBundle:Toponym t
             WHERE t.id = :rome
 DQL;
-
         $result = $this->_em->createQuery($DQL)->execute(array(
             'rome' => 3169070
         ));
-var_dump($result[0]);
-        $this->assertFalse((bool)$result[0]['isNotWithin']);
-        $this->assertTrue((bool)$result[0]['isWithin']);
 
-        if ($this->_em->getConfiguration()->getCustomNumericFunction('LATITUDE_WITHIN') != 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite\LatitudeWithin') {
+        $this->assertFalse((bool)$result[0]['isNotWithinMin']);
+        $this->assertTrue((bool)$result[0]['isWithinMin']);
+        $this->assertTrue((bool)$result[0]['isWithinMax']);
+        $this->assertFalse((bool)$result[0]['isNotWithinMax']);
+
+        if ($this->_em->getConfiguration()->getCustomNumericFunction('LONGITUDE_WITHIN') != 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite\LongitudeWithin') {
+            // Rome 12.4839±15km => w/ latitude [12.21038,12.75742]
             $DQL = <<<DQL
                 SELECT
-                    LONGITUDE_WITHIN(t.longitude, t.latitude, 12.0, 15) as isNotWithin,
-                    LONGITUDE_WITHIN(t.longitude, t.latitude, 12.5, 15) as isWithin
+                    LONGITUDE_WITHIN(t.longitude, t.latitude, 12.21037, 15) as isNotWithinMin,
+                    LONGITUDE_WITHIN(t.longitude, t.latitude, 12.21039, 15) as isWithinMin,
+                    LONGITUDE_WITHIN(t.longitude, t.latitude, 12.75741, 15) as isWithinMax,
+                    LONGITUDE_WITHIN(t.longitude, t.latitude, 12.75743, 15) as isNotWithinMax
                 FROM Giosh94mhzGeonamesBundle:Toponym t
                 WHERE t.id = :rome
 DQL;
@@ -255,8 +261,10 @@ DQL;
                 'rome' => 3169070
             ));
 
-            $this->assertFalse((bool)$result[0]['isNotWithin']);
-            $this->assertTrue((bool)$result[0]['isWithin']);
+            $this->assertFalse((bool)$result[0]['isNotWithinMin']);
+            $this->assertTrue((bool)$result[0]['isWithinMin']);
+            $this->assertTrue((bool)$result[0]['isWithinMax']);
+            $this->assertFalse((bool)$result[0]['isNotWithinMax']);
         }
     }
 

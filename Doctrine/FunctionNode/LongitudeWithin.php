@@ -69,8 +69,8 @@ class LongitudeWithin extends FunctionNode
         return sprintf(
             $p->getBetweenExpression(
                 '%s',
-                '%s - %s / ABS(' . $p->getCosExpression('%s') . ') * %F',
-                '%s + %s / ABS(' . $p->getCosExpression('%s') . ') * %F'
+                '%s - %s / ABS(' . $p->getCosExpression('%s') . ' * %F)',
+                '%s + %s / ABS(' . $p->getCosExpression('%s') . ' * %F)'
             ),
             $sqlWalker->walkArithmeticPrimary($this->longitude),
             $sqlWalker->walkArithmeticPrimary($this->center),
