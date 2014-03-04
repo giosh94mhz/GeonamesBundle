@@ -12,7 +12,7 @@ class FeatureCollection extends ArrayCollection
     private $exclude;
     private $forceInclude;
 
-    public function __construct( ObjectRepository $repo, array $include, array $exclude = array(), array $forceInclude = array())
+    public function __construct(ObjectRepository $repo, array $include, array $exclude = array(), array $forceInclude = array())
     {
         parent::__construct();
 
@@ -28,7 +28,7 @@ class FeatureCollection extends ArrayCollection
     {
         $this->clear();
         foreach ($this->repo->findAll() as $feature) {
-            $key=$this->getKey($feature);
+            $key = $this->getKey($feature);
             if ($this->isKeyIncluded($key))
                 $this->set($key, $feature);
         }
