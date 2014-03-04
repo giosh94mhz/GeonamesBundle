@@ -81,6 +81,7 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
             array(3175395, 'Repubblica Italiana', 'Repubblica Italiana', 42.83333, 12.83333, 'A.PCLI', 'IT', '00', null, null, null, 60340328, null),
             array(3174618, 'Regione Lombardia', 'Regione Lombardia', 45.66667, 9.5, 'A.ADM1', 'IT', '09', null, null, null, 9826141, null),
             array(3169070, 'Rome', 'Rome', 41.89474, 12.4839, 'P.PPLC', 'IT', '07', 'RM', '058091', null, 2563241, null),
+            array(3164603, 'Venezia', 'Venezia', 45.43861, 12.32667, 'P.PPLA', 'IT', '20', 'VE', '027042', null, 270816, null),
             array(3173435, 'Milano', 'Milano', 45.46427, 9.18951, 'P.PPLA', 'IT', '09', 'MI', '015146', null, 1306661, '120'),
             array(3178227, 'Provincia di Como', 'Provincia di Como', 45.98333, 9.21667, 'A.ADM2', 'IT', '09', 'CO', null, null, 590050, null),
             array(6535698, 'Ello', 'Ello', 45.78568, 9.36534, 'P.PPLA3', 'IT', '09', 'LC', '097033', null, 1110, null),

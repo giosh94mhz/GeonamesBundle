@@ -48,7 +48,7 @@ class GeoDistance extends FunctionNode
         $pi = $p->getPiExpression();
 
         // %F * ASIN(SQRT(POWER(SIN((%s - %s) * PI()/360), 2) + COS(%s * PI()/180) * COS(%s * PI()/180) * POWER(SIN((%s - %s) * PI()/360), 2)))
-        $formula = "%F * ({$pi} / 360 - " .  $p->getAcosExpression(
+        $formula = "%F * ({$pi} / 2 - " .  $p->getAcosExpression(
             $p->getSqrtExpression(
                 '('
                     . $p->getSinExpression("(%s - %s)  * {$pi} / 360")

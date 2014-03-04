@@ -35,8 +35,9 @@ class LatitudeWithin extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
+        $p = $sqlWalker->getConnection()->getDatabasePlatform();
         return sprintf(
-            '(%s BETWEEN %s - (%s / %F) AND %s + (%s / %F))',
+            $p->getBetweenExpression('%s', '%s - %s / %F', '%s + %s / %F'),
             $sqlWalker->walkArithmeticPrimary($this->latitude),
             $sqlWalker->walkArithmeticPrimary($this->center),
             $sqlWalker->walkArithmeticPrimary($this->distance),

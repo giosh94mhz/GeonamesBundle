@@ -5,6 +5,7 @@ use Doctrine\Tests\OrmFunctionalTestCase as DoctrineOrmFunctionalTestCase;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Configuration;
 
 /**
  * Basic class for functional database tests
@@ -35,6 +36,7 @@ class OrmFunctionalTestCase extends DoctrineOrmFunctionalTestCase
     protected function _getEntityManager($config = null, $eventManager = null)
     {
         $em = parent::_getEntityManager($config, $eventManager);
+
         $this->emulateBundleBoot($em);
 
         return $em;
@@ -53,12 +55,13 @@ class OrmFunctionalTestCase extends DoctrineOrmFunctionalTestCase
         if ($em->getConnection()->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
             $config->addCustomNumericFunction('GEO_DISTANCE', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite\GeoDistance');
             $config->addCustomNumericFunction('GEO_DISTANCE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite\GeoDistanceWithin');
+            $config->addCustomNumericFunction('LONGITUDE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite\LongitudeWithin');
         } else {
             $config->addCustomNumericFunction('GEO_DISTANCE', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\GeoDistance');
             $config->addCustomNumericFunction('GEO_DISTANCE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\GeoDistanceWithin');
+            $config->addCustomNumericFunction('LONGITUDE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\LongitudeWithin');
         }
         $config->addCustomNumericFunction('LATITUDE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\LatitudeWithin');
-        $config->addCustomNumericFunction('LONGITUDE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\LongitudeWithin');
 
         if (! Type::hasType('string_simple_array'))
             Type::addType('string_simple_array', 'Giosh94mhz\GeonamesBundle\Doctrine\Types\StringSimpleArrayType');

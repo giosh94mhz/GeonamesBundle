@@ -48,25 +48,30 @@ class LongitudeWithin extends FunctionNode
         return $this->latitude? $this->getSqlWithLatitude($sqlWalker) : $this->getSqlWithoutLatitude($sqlWalker);
     }
 
-    private function getSqlWithoutLatitude(SqlWalker $sqlWalker)
+    protected function getSqlWithoutLatitude(SqlWalker $sqlWalker)
     {
+        $p = $sqlWalker->getConnection()->getDatabasePlatform();
         return sprintf(
-            '(%s BETWEEN (%s - %s / %F) AND (%s + %s / %F))',
+            $p->getBetweenExpression('%s', '%s - %s / %F', '%s + %s / %F'),
             $sqlWalker->walkArithmeticPrimary($this->longitude),
             $sqlWalker->walkArithmeticPrimary($this->center),
             $sqlWalker->walkArithmeticPrimary($this->distance),
             Measure::RADIANS_TO_KM,
             $sqlWalker->walkArithmeticPrimary($this->center),
             $sqlWalker->walkArithmeticPrimary($this->distance),
-            $sqlWalker->walkArithmeticPrimary($this->longitude),
             Measure::RADIANS_TO_KM
         );
     }
 
-    private function getSqlWithLatitude(SqlWalker $sqlWalker)
+    protected function getSqlWithLatitude(SqlWalker $sqlWalker)
     {
+        $p = $sqlWalker->getConnection()->getDatabasePlatform();
         return sprintf(
-            '(%s BETWEEN (%s -(%s / ABS(COS(%s) * %F))) AND (%s + (%s / ABS(COS(%s) * %F))))',
+            $p->getBetweenExpression(
+                '%s',
+                '%s - %s / ABS(' . $p->getCosExpression('%s') . ') * %F',
+                '%s + %s / ABS(' . $p->getCosExpression('%s') . ') * %F'
+            ),
             $sqlWalker->walkArithmeticPrimary($this->longitude),
             $sqlWalker->walkArithmeticPrimary($this->center),
             $sqlWalker->walkArithmeticPrimary($this->distance),
