@@ -12,7 +12,7 @@ namespace Giosh94mhz\GeonamesBundle\Model;
  *
  * @author giosh
  */
-class ToponymProxy implements Toponym
+abstract class ToponymProxy implements Toponym
 {
     /**
      * @var \Giosh94mhz\GeonamesBundle\Model\Toponym
