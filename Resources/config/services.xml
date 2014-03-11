@@ -31,6 +31,7 @@
         <parameter key="giosh94mhz_geonames.import.download_adapter.curl.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\CurlDownloadAdapter</parameter>
         <parameter key="giosh94mhz_geonames.import.download_adapter.guzzle.class">Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\GuzzleDownloadAdapter</parameter>
         <parameter key="giosh94mhz_geonames.import.director.class">Giosh94mhz\GeonamesBundle\Import\ImportDirector</parameter>
+        <parameter key="giosh94mhz_geonames.import.feature_match.class">Giosh94mhz\GeonamesBundle\Import\FeatureMatch</parameter>
         <parameter key="giosh94mhz_geonames.import.step.feature.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.language.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\LanguageImportStepBuilder</parameter>
         <parameter key="giosh94mhz_geonames.import.step.toponym.class">Giosh94mhz\GeonamesBundle\Import\StepBuilder\ToponymImportStepBuilder</parameter>
@@ -63,11 +64,16 @@
             </call>
         </service>
 
+        <service id="giosh94mhz_geonames.import.feature_match" class="%giosh94mhz_geonames.import.feature_match.class%"
+            public="false">
+            <argument>%giosh94mhz_geonames.feature.include%</argument>
+            <argument>%giosh94mhz_geonames.feature.exclude%</argument>
+            <argument>%giosh94mhz_geonames.feature.force_include%</argument>
+        </service>
+
         <service id="giosh94mhz_geonames.import.step.feature" class="%giosh94mhz_geonames.import.step.feature.class%" lazy="true">
             <tag name="giosh94mhz_geonames.import.all_steps" />
             <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
-            <argument type="service" id="giosh94mhz_geonames.features_enabled"/>
-            <argument type="service" id="giosh94mhz_geonames.forced_features_enabled"/>
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher"/>
             </call>
@@ -87,9 +93,11 @@
         <service id="giosh94mhz_geonames.import.step.toponym" class="%giosh94mhz_geonames.import.step.toponym.class%" lazy="true">
             <tag name="giosh94mhz_geonames.import.all_steps" />
             <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
-            <argument type="service" id="giosh94mhz_geonames.features_enabled"/>
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher"/>
+            </call>
+            <call method="setFeatureMatch">
+                <argument type="service" id="giosh94mhz_geonames.import.feature_match"/>
             </call>
             <call method="setCityPopulation">
                 <argument>%giosh94mhz_geonames.toponym.cities%</argument>

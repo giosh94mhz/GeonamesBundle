@@ -23,13 +23,5 @@ class ImportAllCompilerPass implements CompilerPassInterface
             'Doctrine\Common\Collections\ArrayCollection',
             array($importSteps)
         ));
-
-        $forcedFeatureInclude = $container->getParameter('giosh94mhz_geonames.feature.forced_include');
-        if (! empty($forcedFeatureInclude)) {
-            $toponym = $container->getDefinition('giosh94mhz_geonames.import.step.toponym');
-            $toponym->addMethodCall('setForcedFeatures', array(
-                new Reference('giosh94mhz_geonames.forced_features_enabled')
-            ));
-        }
     }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Import\StepBuilder;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Giosh94mhz\GeonamesBundle\Entity\Toponym;
@@ -10,6 +9,7 @@ use Giosh94mhz\GeonamesBundle\Import\FileReader\ZipReader;
 use Giosh94mhz\GeonamesBundle\Exception\InvalidFeature;
 use Giosh94mhz\GeonamesBundle\Import\FileReader\ChainedReader;
 use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
+use Giosh94mhz\GeonamesBundle\Import\FeatureMatch;
 
 /**
  *
@@ -23,44 +23,51 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
 
     private $om;
 
-    private $features;
-    private $forcedFeatures;
-
-    private $countryCodes;
-    private $cityPopulation;
-
-    private $files;
-
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
      */
     private $repository;
 
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private $featureRepo;
+
+    private $featureMatch;
+
+    private $countryCodes;
+    private $cityPopulation;
+
     private $alternateNamesIncluded;
     private $alternateCountryCodesIncluded;
 
-    public function __construct(ObjectManager $om, Collection $features)
+    private $files;
+
+    public function __construct(ObjectManager $om)
     {
         $this->om = $om;
         $this->repository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Toponym');
-
-        $this->features = $features;
+        $this->featureRepo = $this->om->getRepository('Giosh94mhzGeonamesBundle:Feature');
 
         $this->countryCodes = array();
         $this->cityPopulation = null;
 
         $this->alternateNamesIncluded = true;
         $this->alternateCountryCodesIncluded = true;
+
+        $this->files = array();
     }
 
-    public function getForcedFeatures()
+    public function getFeatureMatch()
     {
-        return $this->forcedFeatures;
+        return $this->featureMatch;
     }
 
-    public function setForcedFeatures(Collection $forceFeatures)
+    public function setFeatureMatch(FeatureMatch $featureMatch)
     {
-        $this->forcedFeatures = $forceFeatures;
+        $this->featureMatch = $featureMatch;
+
+        return $this;
     }
 
     public function getCityPopulation()
@@ -121,7 +128,8 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
         $baseUrl = self::GEONAME_DUMP_URL;
         $sources = array();
 
-        if (($this->forcedFeatures && ! $this->forcedFeatures->isEmpty())
+        $forcedInclude = $this->featureMatch->getForceInclude();
+        if (! empty($forcedInclude)
             || (empty($this->countryCodes) && !$this->cityPopulation)
             || $this->cityPopulation && $this->cityPopulation < self::CITY_SMALL
         ) {
@@ -205,22 +213,17 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
         if (empty($value[6]) || empty($value[7]))
             throw new InvalidFeature("Invalid feature class='{$value[6]}' code='$value[7]'");
 
-        $key = $value[6] . '.' . $value[7];
-
-        if ($this->forcedFeatures && isset($this->forcedFeatures[$key])) {
-            return $this->forcedFeatures[$key];
-        }
-
-        if (!isset($this->features[$key]))
+        if ($this->featureMatch && ! $this->featureMatch->isIncluded($value[6], $value[7]) )
             throw new SkipImportException("Feature should not be included");
-
-        $feature = $this->features[$key];
 
         if (!empty($this->countryCodes) || !empty($this->cityPopulation)) {
             if( !in_array($value[8], $this->countryCodes) && $value[14] < $this->cityPopulation )
                 throw new SkipImportException("Toponym does not match country or cities limits");
         }
 
-        return $feature;
+        return $this->featureRepo->find(array(
+            'class' => $value[6],
+            'code' => $value[7]
+        ));
     }
 }

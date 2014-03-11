@@ -5,7 +5,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Giosh94mhz\GeonamesBundle\Entity\Feature;
 use Giosh94mhz\GeonamesBundle\Model\Import\DownloadAdapter;
 use Giosh94mhz\GeonamesBundle\Import\FileReader\TxtReader;
-use Giosh94mhz\GeonamesBundle\Import\FeatureCollection;
 use Giosh94mhz\GeonamesBundle\Exception\SkipImportException;
 
 /**
@@ -17,8 +16,6 @@ class FeatureImportStepBuilder extends AbstractImportStepBuilder
     private $om;
 
     private $locale;
-    private $features;
-    private $forcedFeatures;
 
     private $file;
     /**
@@ -26,14 +23,11 @@ class FeatureImportStepBuilder extends AbstractImportStepBuilder
      */
     private $repository;
 
-    public function __construct(ObjectManager $om, FeatureCollection $features, FeatureCollection $forcedFeatures)
+    public function __construct(ObjectManager $om)
     {
         $this->om = $om;
         $this->repository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Feature');
-
         $this->locale = 'en';
-        $this->features = $features;
-        $this->forcedFeatures = $forcedFeatures;
     }
 
     /**
@@ -81,18 +75,12 @@ class FeatureImportStepBuilder extends AbstractImportStepBuilder
         list($class, $code) = explode('.', $value[0], 2);
 
         /* @var $feature \Giosh94mhz\GeonamesBundle\Entity\Feature */
-        $feature=$this->repository->find(array( 'code' => $code, 'class' => $class )) ?: new Feature($class, $code);
+        $feature = $this->repository->find(array('code' => $code, 'class' => $class)) ?: new Feature($class, $code);
 
         $feature
             ->setName($value[1])
             ->setDescription($value[2]);
 
         return $feature;
-    }
-
-    public function finalize()
-    {
-        $this->features->refresh();
-        $this->forcedFeatures->refresh();
     }
 }
