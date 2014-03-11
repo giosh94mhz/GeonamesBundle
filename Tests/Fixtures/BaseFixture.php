@@ -5,6 +5,11 @@ namespace Giosh94mhz\GeonamesBundle\Tests\Fixtures;
 use Doctrine\Common\Persistence\ObjectManager;
 use Giosh94mhz\GeonamesBundle\Entity\Feature;
 use Giosh94mhz\GeonamesBundle\Entity\Toponym;
+use Giosh94mhz\GeonamesBundle\Entity\Continent;
+use Giosh94mhz\GeonamesBundle\Entity\Country;
+use Giosh94mhz\GeonamesBundle\Entity\Admin1;
+use Giosh94mhz\GeonamesBundle\Entity\Admin2;
+
 
 class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
 {
@@ -23,12 +28,21 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
 
         $this->loadToponyms();
 
+        $this->loadContinents();
+
+        $this->loadCountries();
+
+        $this->loadAdmin1();
+
+        $this->loadAdmin2();
+
         $manager->flush();
     }
 
     protected function loadFeatures()
     {
         $fixtures = array(
+            array('L.CONT', 'continent'),
             array('A.ADM1', 'first-order administrative division'),
             array('A.ADM1H', 'historical first-order administrative division'),
             array('A.ADM2', 'second-order administrative division'),
@@ -78,6 +92,7 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
     protected function loadToponyms()
     {
         $fixtures = array(
+            array(6255148, 'Europe', 'Europe', 48.69096, 9.14062, 'L.CONT', null, null, null, null, null, null, null),
             array(3175395, 'Repubblica Italiana', 'Repubblica Italiana', 42.83333, 12.83333, 'A.PCLI', 'IT', '00', null, null, null, 60340328, null),
             array(3174618, 'Regione Lombardia', 'Regione Lombardia', 45.66667, 9.5, 'A.ADM1', 'IT', '09', null, null, null, 9826141, null),
             array(3169070, 'Rome', 'Rome', 41.89474, 12.4839, 'P.PPLC', 'IT', '07', 'RM', '058091', null, 2563241, null),
@@ -106,6 +121,91 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
                 ->setLastModify(new \DateTime())
             ;
             $this->om->persist($toponym);
+        }
+    }
+
+    protected function loadContinents()
+    {
+        $fixtures = array(
+            array(6255148, 'EU', 'Europe'),
+        );
+
+        foreach ($fixtures as $c) {
+            $continent = new Continent($this->om->find('Giosh94mhzGeonamesBundle:Toponym', $c[0]));
+            $continent
+                ->setCode($c[1])
+                ->setName($c[2])
+            ;
+            $this->om->persist($continent);
+        }
+    }
+
+    protected function loadCountries()
+    {
+        $fixtures = array(
+            array(3175395, 'IT', 'ITA', 380, 'IT', 'Italy', 'Rome', 301230, 60340328, 'EU', '.it', 'EUR', 'Euro', 39, '#####', '^(\\d{5})$', 'it-IT,de-IT,fr-IT,sc,ca,co,sl', 'CH,VA,SI,SM,FR,AT', null),
+        );
+
+        foreach ($fixtures as $c) {
+            $country = new Country($this->om->find('Giosh94mhzGeonamesBundle:Toponym', $c[0]));
+            $country
+                ->setIso($c[1])
+                ->setIso3($c[2])
+                ->setIsoNumeric($c[3])
+                ->setFipsCode($c[4])
+                ->setName($c[5])
+                ->setCapital($c[6])
+                ->setArea($c[7])
+                ->setPopulation($c[8])
+                ->setContinent($c[9])
+                ->setTopLevelDomain($c[10])
+                ->setCurrency($c[11])
+                ->setCurrencyName($c[12])
+                ->setPhone($c[13])
+                ->setPostalCodeFormat($c[14])
+                ->setPostalCodeRegex($c[15])
+                ->setLanguages(explode(',', $c[16]))
+                ->setNeighbours(explode(',', $c[17]))
+                ->setEquivalentFipsCode($c[18])
+            ;
+            $this->om->persist($country);
+        }
+    }
+
+    protected function loadAdmin1()
+    {
+        $fixtures = array(
+            array(3174618, '09', 'IT', 'Lombardy', 'Lombardy'),
+        );
+
+        foreach ($fixtures as $a) {
+            $admin = new Admin1($this->om->find('Giosh94mhzGeonamesBundle:Toponym', $a[0]));
+            $admin
+                ->setCode($a[1])
+                ->setCountryCode($a[2])
+                ->setName($a[3])
+                ->setAsciiName($a[4])
+            ;
+            $this->om->persist($admin);
+        }
+    }
+
+    protected function loadAdmin2()
+    {
+        $fixtures = array(
+            array(3178227, 'CO', '09', 'IT', 'Provincia di Como', 'Provincia di Como'),
+        );
+
+        foreach ($fixtures as $a) {
+            $admin = new Admin2($this->om->find('Giosh94mhzGeonamesBundle:Toponym', $a[0]));
+            $admin
+                ->setCode($a[1])
+                ->setAdmin1Code($a[2])
+                ->setCountryCode($a[3])
+                ->setName($a[4])
+                ->setAsciiName($a[5])
+            ;
+            $this->om->persist($admin);
         }
     }
 }
