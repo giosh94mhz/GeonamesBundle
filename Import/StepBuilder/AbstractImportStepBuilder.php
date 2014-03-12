@@ -25,7 +25,4 @@ abstract class AbstractImportStepBuilder implements ImportStepBuilder
 
         return $this;
     }
-
-    public function finalize()
-    {}
 }

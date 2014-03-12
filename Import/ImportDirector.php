@@ -116,8 +116,6 @@ class ImportDirector implements ImportDirectorInterface
 
         $this->om->flush();
 
-        $builder->finalize();
-
         if ($this->dispatcher) {
             $this->dispatcher->dispatch(GeonamesImportEvents::POST_IMPORT_STEP,
                                         new PostImportEvent($synced, $skipped, $errors));

@@ -10,6 +10,4 @@ interface ImportStepBuilder
     public function buildReader();
 
     public function buildEntity($value);
-
-    public function finalize();
 }
