@@ -19,23 +19,26 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager, $excludeToponym = false)
     {
         $this->om = $manager;
 
         $this->loadFeatures();
 
-        $this->loadToponyms();
+        if (! $excludeToponym) {
+            $this->loadToponyms();
 
-        $this->loadContinents();
+            $this->loadContinents();
 
-        $this->loadCountries();
+            $this->loadCountries();
 
-        $this->loadAdmin1();
+            $this->loadAdmin1();
 
-        $this->loadAdmin2();
+            $this->loadAdmin2();
+        }
 
-        $manager->flush();
+        $this->om->flush();
+        $this->om = null;
     }
 
     protected function loadFeatures()
@@ -78,7 +81,9 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
             array('P.PPLW', 'destroyed populated place'),
             array('P.PPLX', 'section of populated place'),
             array('P.STLMT', 'israeli settlement'),
-            array('R.CSWY', 'causeway')
+            array('R.CSWY', 'causeway'),
+            array('T.PK', 'peak'),
+            array('T.RK', 'rock'),
         );
 
         foreach ($fixtures as $f) {
@@ -91,13 +96,19 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
     protected function loadToponyms()
     {
         $fixtures = array(
-            array(6255148, 'Europe', 'Europe', 48.69096, 9.14062, 'L.CONT', null, null, null, null, null, null, null),
-            array(3175395, 'Repubblica Italiana', 'Repubblica Italiana', 42.83333, 12.83333, 'A.PCLI', 'IT', '00', null, null, null, 60340328, null),
-            array(3174618, 'Regione Lombardia', 'Regione Lombardia', 45.66667, 9.5, 'A.ADM1', 'IT', '09', null, null, null, 9826141, null),
-            array(3169070, 'Rome', 'Rome', 41.89474, 12.4839, 'P.PPLC', 'IT', '07', 'RM', '058091', null, 2563241, null),
+            array(2635167, 'United Kingdom of Great Britain and Northern Ireland', 'United Kingdom of Great Britain and Northern Ireland', 54.75844, -2.69531, 'A.PCLI', 'GB', '00', null, null, null, 62348447, null),
+            array(3017382, 'Republic of France', 'Republic of France', 46, 2, 'A.PCLI', 'FR', '00', null, null, null, 64768389, null),
             array(3164603, 'Venezia', 'Venezia', 45.43861, 12.32667, 'P.PPLA', 'IT', '20', 'VE', '027042', null, 270816, null),
+            array(3165361, 'Regione Toscana', 'Regione Toscana', 43.41667, 11, 'A.ADM1', 'IT', '16', null, null, null, 3730130, null),
+            array(3166546, 'Provincia di Siena', 'Provincia di Siena', 43.21667, 11.4, 'A.ADM2', 'IT', '16', 'SI', null, null, 271365, null),
+            array(3169070, 'Rome', 'Rome', 41.89474, 12.4839, 'P.PPLC', 'IT', '07', 'RM', '058091', null, 2563241, null),
             array(3173435, 'Milano', 'Milano', 45.46427, 9.18951, 'P.PPLA', 'IT', '09', 'MI', '015146', null, 1306661, '120'),
+            array(3174618, 'Regione Lombardia', 'Regione Lombardia', 45.66667, 9.5, 'A.ADM1', 'IT', '09', null, null, null, 9826141, null),
+            array(3175395, 'Repubblica Italiana', 'Repubblica Italiana', 42.83333, 12.83333, 'A.PCLI', 'IT', '00', null, null, null, 60340328, null),
+            array(3176958, 'Provincia di Firenze', 'Provincia di Firenze', 43.83333, 11.33333, 'A.ADM2', 'IT', '16', 'FI', null, null, 991862, null),
             array(3178227, 'Provincia di Como', 'Provincia di Como', 45.98333, 9.21667, 'A.ADM2', 'IT', '09', 'CO', null, null, 590050, null),
+            array(6255146, 'Africa', 'Africa', 7.1881, 21.09375, 'L.CONT', null, null, null, null, null, null, null),
+            array(6255148, 'Europe', 'Europe', 48.69096, 9.14062, 'L.CONT', null, null, null, null, null, null, null),
             array(6535698, 'Ello', 'Ello', 45.78568, 9.36534, 'P.PPLA3', 'IT', '09', 'LC', '097033', null, 1110, null),
             array(6537155, 'Romano di Lombardia', 'Romano di Lombardia', 45.52458, 9.74836, 'A.ADM3', 'IT', '09', 'BG', '016183', null, 18622, null),
         );
@@ -142,28 +153,29 @@ class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
     protected function loadCountries()
     {
         $fixtures = array(
-            array(3175395, 'IT', 'ITA', 380, 'IT', 'Italy', 'Rome', 301230, 60340328, 'EU', '.it', 'EUR', 'Euro', 39, '#####', '^(\\d{5})$', 'it-IT,de-IT,fr-IT,sc,ca,co,sl', 'CH,VA,SI,SM,FR,AT', null),
+            array('IT', 'ITA', 380, 'IT', 'Italy', 'Rome', 301230, 60340328, 'EU', '.it', 'EUR', 'Euro', 39, '#####', '^(\\d{5})$', 'it-IT,de-IT,fr-IT,sc,ca,co,sl', 3175395, 'CH,VA,SI,SM,FR,AT', null),
+            array('FR', 'FRA', 250, 'FR', 'France', 'Paris', 547030, 64768389, 'EU', '.fr', 'EUR', 'Euro', 33, '#####', '^(\\d{5})$', 'fr-FR,frp,br,co,ca,eu,oc', 3017382, 'CH,DE,BE,LU,IT,AD,MC,ES', null),
         );
 
         foreach ($fixtures as $c) {
-            $country = new Country($this->om->find('Giosh94mhzGeonamesBundle:Toponym', $c[0]));
+            $country = new Country($this->om->find('Giosh94mhzGeonamesBundle:Toponym', $c[16]));
             $country
-                ->setIso($c[1])
-                ->setIso3($c[2])
-                ->setIsoNumeric($c[3])
-                ->setFipsCode($c[4])
-                ->setName($c[5])
-                ->setCapital($c[6])
-                ->setArea($c[7])
-                ->setPopulation($c[8])
-                ->setContinent($c[9])
-                ->setTopLevelDomain($c[10])
-                ->setCurrency($c[11])
-                ->setCurrencyName($c[12])
-                ->setPhone($c[13])
-                ->setPostalCodeFormat($c[14])
-                ->setPostalCodeRegex($c[15])
-                ->setLanguages(explode(',', $c[16]))
+                ->setIso($c[0])
+                ->setIso3($c[1])
+                ->setIsoNumeric($c[2])
+                ->setFipsCode($c[3])
+                ->setName($c[4])
+                ->setCapital($c[5])
+                ->setArea($c[6])
+                ->setPopulation($c[7])
+                ->setContinent($c[8])
+                ->setTopLevelDomain($c[9])
+                ->setCurrency($c[10])
+                ->setCurrencyName($c[11])
+                ->setPhone($c[12])
+                ->setPostalCodeFormat($c[13])
+                ->setPostalCodeRegex($c[14])
+                ->setLanguages(explode(',', $c[15]))
                 ->setNeighbours(explode(',', $c[17]))
                 ->setEquivalentFipsCode($c[18])
             ;

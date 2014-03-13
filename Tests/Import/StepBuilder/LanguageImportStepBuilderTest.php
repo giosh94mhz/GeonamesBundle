@@ -1,7 +1,7 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Tests\Import\StepBuilder;
 
-use Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder;
+use Giosh94mhz\GeonamesBundle\Import\StepBuilder\LanguageImportStepBuilder;
 
 /**
  *
@@ -9,30 +9,18 @@ use Giosh94mhz\GeonamesBundle\Import\StepBuilder\FeatureImportStepBuilder;
  */
 class LanguageImportStepBuilderTest extends AbstractImportStepBuilderTest
 {
-    private $step;
-
     protected function setUp()
     {
         parent::setUp();
-        $this->step = new FeatureImportStepBuilder($this->_em);
+
+        $this->step = new LanguageImportStepBuilder($this->_em);
         $this->director->addStep($this->step);
-    }
-
-    public function testLocale()
-    {
-        $this->assertEquals('en', $this->step->getLocale());
-
-        $this->assertSame($this->step, $this->step->setLocale('it'));
-
-        $this->assertEquals('it', $this->step->getLocale());
     }
 
     public function testFullImport()
     {
-        $this->director->import();
+        $this->doDirectorImport();
 
-        $all = $this->_em->getRepository('Giosh94mhzGeonamesBundle:Feature')->findAll();
-
-        $this->assertGreaterThan(0, $all);
+        $this->assertCount(8, $this->_em->getRepository('Giosh94mhzGeonamesBundle:Language')->findAll());
     }
 }

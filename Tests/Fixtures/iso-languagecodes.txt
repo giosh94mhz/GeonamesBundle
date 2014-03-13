@@ -1,0 +1,9 @@
+ISO 639-3	ISO 639-2	ISO 639-1	Language Name
+art	art		Artificial languages
+deu	deu / ger* 	de	German
+eng	eng	en	English
+fra	fra / fre* 	fr	French
+ita	ita	it	Italian
+jpn	jpn	ja	Japanese
+pms			Piemontese
+wtf			Dumpu

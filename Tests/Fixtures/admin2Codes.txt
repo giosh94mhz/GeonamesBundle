@@ -1,1 +1,3 @@
 IT.09.CO	Provincia di Como	Provincia di Como	3178227
+IT.16.FI	Provincia di Firenze	Provincia di Firenze	3176958
+IT.16.SI	Provincia di Siena	Provincia di Siena	3166546
