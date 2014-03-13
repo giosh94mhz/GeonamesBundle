@@ -5,7 +5,6 @@ use Doctrine\Tests\OrmFunctionalTestCase as DoctrineOrmFunctionalTestCase;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Configuration;
 
 /**
  * Basic class for functional database tests

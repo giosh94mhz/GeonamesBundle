@@ -16,6 +16,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
     protected function setUpCustomNumericFunctions(Configuration $config)
     {
         parent::setUpCustomNumericFunctions($config);
+
         return;
 
         $config->addCustomNumericFunction('LATITUDE_WITHIN', 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\LatitudeWithin');
@@ -198,8 +199,8 @@ DQL;
             'rome' => 3169070
         ));
 
-        $this->assertFalse((bool)$result[0]['isNotWithin']);
-        $this->assertTrue((bool)$result[0]['isWithin']);
+        $this->assertFalse((bool) $result[0]['isNotWithin']);
+        $this->assertTrue((bool) $result[0]['isWithin']);
     }
 
     public function testLatitudeWithinRome()
@@ -219,8 +220,8 @@ DQL;
             'rome' => 3169070
         ));
 
-        $this->assertFalse((bool)$result[0]['isNotWithin']);
-        $this->assertTrue((bool)$result[0]['isWithin']);
+        $this->assertFalse((bool) $result[0]['isNotWithin']);
+        $this->assertTrue((bool) $result[0]['isWithin']);
     }
 
     public function testLongitudeWithinRome()
@@ -241,10 +242,10 @@ DQL;
             'rome' => 3169070
         ));
 
-        $this->assertFalse((bool)$result[0]['isNotWithinMin']);
-        $this->assertTrue((bool)$result[0]['isWithinMin']);
-        $this->assertTrue((bool)$result[0]['isWithinMax']);
-        $this->assertFalse((bool)$result[0]['isNotWithinMax']);
+        $this->assertFalse((bool) $result[0]['isNotWithinMin']);
+        $this->assertTrue((bool) $result[0]['isWithinMin']);
+        $this->assertTrue((bool) $result[0]['isWithinMax']);
+        $this->assertFalse((bool) $result[0]['isNotWithinMax']);
 
         if ($this->_em->getConfiguration()->getCustomNumericFunction('LONGITUDE_WITHIN') != 'Giosh94mhz\GeonamesBundle\Doctrine\FunctionNode\Sqlite\LongitudeWithin') {
             // Rome 12.4839±15km => w/ latitude [12.21038,12.75742]
@@ -261,10 +262,10 @@ DQL;
                 'rome' => 3169070
             ));
 
-            $this->assertFalse((bool)$result[0]['isNotWithinMin']);
-            $this->assertTrue((bool)$result[0]['isWithinMin']);
-            $this->assertTrue((bool)$result[0]['isWithinMax']);
-            $this->assertFalse((bool)$result[0]['isNotWithinMax']);
+            $this->assertFalse((bool) $result[0]['isNotWithinMin']);
+            $this->assertTrue((bool) $result[0]['isWithinMin']);
+            $this->assertTrue((bool) $result[0]['isWithinMax']);
+            $this->assertFalse((bool) $result[0]['isNotWithinMax']);
         }
     }
 
@@ -301,6 +302,7 @@ DQL;
             ),
             preg_quote($string, '/')
         );
+
         return '/^' . $string . '$/s';
     }
 }

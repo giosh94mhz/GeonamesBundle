@@ -2,7 +2,6 @@
 namespace Giosh94mhz\GeonamesBundle\Tests\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Giosh94mhz\GeonamesBundle\Doctrine\BufferedObjectManagerDecorator;
 
 class BufferedObjectManagerDecoratorTest extends \PHPUnit_Framework_TestCase

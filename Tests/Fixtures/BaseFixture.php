@@ -10,7 +10,6 @@ use Giosh94mhz\GeonamesBundle\Entity\Country;
 use Giosh94mhz\GeonamesBundle\Entity\Admin1;
 use Giosh94mhz\GeonamesBundle\Entity\Admin2;
 
-
 class BaseFixture /* implements Doctrine\Common\DataFixtures\FixtureInterface */
 {
     private $om;
