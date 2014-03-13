@@ -7,7 +7,7 @@
     </id>
     <field name="name" type="string" column="name" length="200" nullable="false"/>
     <field name="asciiName" type="string" column="ascii_name" length="200" nullable="false"/>
-    <field name="simpleAlternateNames" type="string_simple_array" column="alternate_names" length="4000" nullable="true"/>
+    <field name="alternateNamesArray" type="string_simple_array" column="alternate_names" length="4000" nullable="true"/>
     <field name="latitude" type="float" column="latitude" precision="10" scale="7" nullable="true"/>
     <field name="longitude" type="float" column="longitude" precision="10" scale="7" nullable="true"/>
     <many-to-one field="feature" target-entity="Feature">

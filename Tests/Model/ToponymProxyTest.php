@@ -56,6 +56,11 @@ class ToponymProxyTest extends \PHPUnit_Framework_TestCase
         $this->doTestGetter('getAlternateNames');
     }
 
+    public function testAlternateNamesArray()
+    {
+        $this->doTestGetter('getAlternateNamesArray');
+    }
+
     public function testLatitude()
     {
         $this->doTestGetter('getLatitude');

@@ -1,35 +1,48 @@
 <?php
+
 namespace Giosh94mhz\GeonamesBundle\Model;
 
 interface Toponym
 {
     /**
-     * integer id of record in geonames database
+     * Geonames id
+     * @return integer
      */
     public function getId();
 
     /**
      * name of geographical point
+     * @return string
      */
     public function getName();
 
     /**
      * name of geographical point in plain ascii characters
+     * @return string
      */
     public function getAsciiName();
 
     /**
-     * an array of alternate names
+     * A collection of alternate names
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getAlternateNames();
 
     /**
+     * An array of alternate names (string only)
+     * @return array
+     */
+    public function getAlternateNamesArray();
+
+    /**
      * latitude in decimal degrees
+     * @return float
      */
     public function getLatitude();
 
     /**
      * longitude in decimal degrees
+     * @return float
      */
     public function getLongitude();
 
@@ -42,6 +55,7 @@ interface Toponym
 
     /**
      * ISO-3166 2-letter country code, 2 characters
+     * @return string
      */
     public function getCountryCode();
 

@@ -39,6 +39,11 @@ abstract class ToponymProxy implements Toponym
         return $this->toponym->getAlternateNames();
     }
 
+    public function getAlternateNamesArray()
+    {
+        return $this->toponym->getAlternateNamesArray();
+    }
+
     public function getLatitude()
     {
         return $this->toponym->getLatitude();

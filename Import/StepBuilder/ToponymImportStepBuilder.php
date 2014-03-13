@@ -191,7 +191,7 @@ class ToponymImportStepBuilder extends AbstractImportStepBuilder
 
         if ($this->isAlternateNamesIncluded()) {
             $altNames = empty($value[3])? array() : explode(',', $value[3]);
-            $toponym->setSimpleAlternateNames($altNames);
+            $toponym->setAlternateNamesArray($altNames);
         }
 
         if ($this->isAlternateCountryCodesIncluded()) {

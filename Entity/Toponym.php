@@ -3,6 +3,7 @@
 namespace Giosh94mhz\GeonamesBundle\Entity;
 
 use Giosh94mhz\GeonamesBundle\Model\Toponym as ToponymInterface;
+use Giosh94mhz\GeonamesBundle\Model\AlternateName;
 
 /**
  * Toponym
@@ -27,7 +28,7 @@ class Toponym implements ToponymInterface
     /**
      * @var string[]
      */
-    private $simpleAlternateNames;
+    private $alternateNamesArray;
 
     /**
      * @var float
@@ -120,7 +121,7 @@ class Toponym implements ToponymInterface
     public function __construct($id)
     {
         $this->id = intval($id);
-        $this->simpleAlternateNames = array();
+        $this->alternateNamesArray = array();
         $this->alternateCountryCodes = array();
 
         $this->alternateNames = new \Doctrine\Common\Collections\ArrayCollection();
@@ -175,26 +176,32 @@ class Toponym implements ToponymInterface
     }
 
     /**
-     * Set simpleAlternateNames
+     * Set alternate names as a simple array
      *
-     * @param  string[] $simpleAlternateNames
+     * @param  string[] $alternateNamesArray
      * @return Toponym
      */
-    public function setSimpleAlternateNames(array $simpleAlternateNames)
+    public function setAlternateNamesArray(array $alternateNamesArray)
     {
-        $this->simpleAlternateNames = $simpleAlternateNames;
+        $this->alternateNamesArray = $alternateNamesArray;
 
         return $this;
     }
 
     /**
-     * Get simpleAlternateNames
+     * Get alternate names as a simple array
      *
      * @return string[]
      */
-    public function getSimpleAlternateNames()
+    public function getAlternateNamesArray()
     {
-        return $this->simpleAlternateNames;
+        if (empty($this->alternateNamesArray)) {
+            return array_map(function(AlternateName $alternateName) {
+                return $alternateName->getName();
+            }, $this->alternateNames->toArray());
+        }
+
+        return $this->alternateNamesArray;
     }
 
     /**
