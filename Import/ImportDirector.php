@@ -114,6 +114,8 @@ class ImportDirector implements ImportDirectorInterface
                                             new OnProgressEvent($totalSize, $size + 1));
         }
 
+        $reader->close();
+
         $this->om->flush();
 
         if ($this->dispatcher) {
