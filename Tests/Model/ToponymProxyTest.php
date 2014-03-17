@@ -126,6 +126,16 @@ class ToponymProxyTest extends \PHPUnit_Framework_TestCase
         $this->doTestGetter('getTimezone');
     }
 
+    public function testParents()
+    {
+        $this->doTestGetter('getParents');
+    }
+
+    public function testChildren()
+    {
+        $this->doTestGetter('getChildren');
+    }
+
     private function doTestGetter($getter, $return = null)
     {
         $cookie = new \stdClass();

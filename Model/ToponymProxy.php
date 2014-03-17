@@ -104,6 +104,16 @@ abstract class ToponymProxy implements Toponym
         return $this->toponym->getGtopo30();
     }
 
+    public function getChildren()
+    {
+        return $this->toponym->getChildren();
+    }
+
+    public function getParents()
+    {
+        return $this->toponym->getParents();
+    }
+
     public function getTimezone()
     {
         return $this->toponym->getTimezone();

@@ -82,6 +82,20 @@ interface Toponym
     public function getGtopo30();
 
     /**
+     * Get parents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParents();
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren();
+
+    /**
      * timezone
      * @return \DateTimeZone
      */
