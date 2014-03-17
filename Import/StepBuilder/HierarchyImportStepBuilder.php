@@ -38,16 +38,6 @@ class HierarchyImportStepBuilder extends AbstractImportStepBuilder
         $this->toponymRepository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Toponym');
     }
 
-    public function getCountryCodes()
-    {
-        return $this->countryCodes;
-    }
-
-    public function setCountryCodes(array $countryCodes)
-    {
-        $this->countryCodes = $countryCodes;
-    }
-
     public function download(DownloadAdapter $download)
     {
         $this->file = $download->add(self::GEONAME_DUMP_URL . 'hierarchy.zip');

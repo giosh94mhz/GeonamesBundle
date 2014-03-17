@@ -33,16 +33,6 @@ abstract class AbstractAdminImportStepBuilder extends AbstractImportStepBuilder
         $this->countryCodes = array();
     }
 
-    public function getCountryCodes()
-    {
-        return $this->countryCodes;
-    }
-
-    public function setCountryCodes(array $countryCodes)
-    {
-        $this->countryCodes = $countryCodes;
-    }
-
     public function download(DownloadAdapter $download)
     {
         $this->file = $download->add($this->getUrl());

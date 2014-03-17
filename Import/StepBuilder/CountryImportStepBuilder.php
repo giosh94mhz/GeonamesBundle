@@ -34,18 +34,6 @@ class CountryImportStepBuilder extends AbstractImportStepBuilder
         $this->repository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Country');
 
         $this->toponymRepository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Toponym');
-
-        $this->countryCodes = array();
-    }
-
-    public function getCountryCodes()
-    {
-        return $this->countryCodes;
-    }
-
-    public function setCountryCodes(array $countryCodes)
-    {
-        $this->countryCodes = $countryCodes;
     }
 
     public function download(DownloadAdapter $download)
