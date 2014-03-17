@@ -24,7 +24,9 @@ class CurlDownloadAdapter extends AbstractDownloadAdapter
         $this->useCache = true;
 
         if (! function_exists('curl_init')) {
+            // @codeCoverageIgnoreStart
             throw new ExtensionNotLoadedException('cURL has to be enabled.');
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -174,7 +176,9 @@ class CurlDownloadAdapter extends AbstractDownloadAdapter
     private function finalizePartFile(&$file)
     {
         if (true !== @rename($file['path'] . self::$partSuffix, $file['path'])) {
+            // @codeCoverageIgnoreStart
             throw new \Exception(sprintf('Cannot rename "%s" to "%s".', $file['path'] . self::$partSuffix, $file['path']));
+            // @codeCoverageIgnoreEnd
         }
     }
 
