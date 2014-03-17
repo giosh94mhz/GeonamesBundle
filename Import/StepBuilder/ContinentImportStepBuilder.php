@@ -28,14 +28,11 @@ class ContinentImportStepBuilder extends AbstractImportStepBuilder
 
     private $file;
 
-    private $continentFeature;
-
     public function __construct(ObjectManager $om)
     {
         $this->om = $om;
         $this->repository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Continent');
         $this->toponymRepository = $this->om->getRepository('Giosh94mhzGeonamesBundle:Toponym');
-        $this->feature = $this->om->find('Giosh94mhzGeonamesBundle:Feature', array('class' => 'L', 'code' => 'CONT'));
     }
 
     public function download(DownloadAdapter $download)
@@ -78,11 +75,16 @@ class ContinentImportStepBuilder extends AbstractImportStepBuilder
         $toponym
             ->setName($name)
             ->setAsciiName($name)
-            ->setFeature($this->feature)
+            ->setFeature($this->getContinentFeature())
             ->setLastModify(new \DateTime('1970-01-01'));
 
         $this->om->persist($toponym);
 
         return $toponym;
+    }
+
+    private function getContinentFeature()
+    {
+        return $this->om->find('Giosh94mhzGeonamesBundle:Feature', array('class' => 'L', 'code' => 'CONT'));
     }
 }
