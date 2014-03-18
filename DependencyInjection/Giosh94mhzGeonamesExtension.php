@@ -178,6 +178,7 @@ class Giosh94mhzGeonamesExtension extends Extension
         );
 
         if(! $config['geocoder']['enabled'])
+
             return;
 
         $loader->load('geocoder.xml');

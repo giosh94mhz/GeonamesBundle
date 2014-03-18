@@ -196,7 +196,7 @@ class Toponym implements ToponymInterface
     public function getAlternateNamesArray()
     {
         if (empty($this->alternateNamesArray)) {
-            return array_map(function(AlternateName $alternateName) {
+            return array_map(function (AlternateName $alternateName) {
                 return $alternateName->getName();
             }, $this->alternateNames->toArray());
         }

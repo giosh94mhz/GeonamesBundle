@@ -51,6 +51,7 @@ class LongitudeWithin extends FunctionNode
     protected function getSqlWithoutLatitude(SqlWalker $sqlWalker)
     {
         $p = $sqlWalker->getConnection()->getDatabasePlatform();
+
         return sprintf(
             $p->getBetweenExpression('%s', '%s - %s / %F', '%s + %s / %F'),
             $sqlWalker->walkArithmeticPrimary($this->longitude),
@@ -66,6 +67,7 @@ class LongitudeWithin extends FunctionNode
     protected function getSqlWithLatitude(SqlWalker $sqlWalker)
     {
         $p = $sqlWalker->getConnection()->getDatabasePlatform();
+
         return sprintf(
             $p->getBetweenExpression(
                 '%s',
