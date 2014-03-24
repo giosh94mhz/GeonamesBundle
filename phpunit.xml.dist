@@ -23,6 +23,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <file>./Giosh94mhzGeonamesBundle.php</file>
                 <directory>./Tests/</directory>
                 <directory>./Resources/</directory>
                 <directory>./DependencyInjection/</directory>
