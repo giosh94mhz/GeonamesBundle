@@ -17,9 +17,6 @@ class ResultAdapter extends AbstractResult implements ResultInterface
     public function __construct(Toponym $toponym = null)
     {
         $this->toponym = $toponym;
-        $this->loader = function ($geonameid) {
-            throw new BadMethodCallException("A loaderClosure is required to call ResultAdapter::fromArray");
-        };
     }
 
     public function setToponym(Toponym $toponym)
@@ -133,8 +130,10 @@ class ResultAdapter extends AbstractResult implements ResultInterface
 
         if (isset($data['toponym']) && $data['toponym']->getId() == $data['geonameid']) {
             $this->toponym = $data['toponym'];
-        } else {
+        } elseif ($this->loader !== null) {
             $this->toponym = call_user_func($this->loader, $data['geonameid']);
+        } else {
+            throw new BadMethodCallException("A loaderClosure is required to call ResultAdapter::fromArray");
         }
     }
 
