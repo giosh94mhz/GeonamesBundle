@@ -125,9 +125,6 @@
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher"/>
             </call>
-            <call method="setCountryCodes">
-                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
-            </call>
         </service>
 
         <service id="giosh94mhz_geonames.import.step.admin1" class="%giosh94mhz_geonames.import.step.admin1.class%" lazy="true">
@@ -135,18 +132,12 @@
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher"/>
             </call>
-            <call method="setCountryCodes">
-                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
-            </call>
         </service>
 
         <service id="giosh94mhz_geonames.import.step.admin2" class="%giosh94mhz_geonames.import.step.admin2.class%" lazy="true">
             <argument type="service" id="giosh94mhz_geonames.orm.object_manager"/>
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher"/>
-            </call>
-            <call method="setCountryCodes">
-                <argument>%giosh94mhz_geonames.toponym.countries%</argument>
             </call>
         </service>
 
