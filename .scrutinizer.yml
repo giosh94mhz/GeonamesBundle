@@ -1,2 +1,13 @@
+imports:
+    - php
+
+filter:
+    excluded_paths:
+        - 'vendor/*'
+        - 'Tests/*'
+    paths: {  }
+
 tools:
     external_code_coverage: true
+    sensiolabs_security_checker: true
+
