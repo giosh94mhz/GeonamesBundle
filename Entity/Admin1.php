@@ -101,7 +101,7 @@ class Admin1 extends ToponymProxy implements Admin1Interface
      */
     public function getName()
     {
-        return $this->name ?: $this->toponym->getAdmin();
+        return $this->name ?: $this->toponym->getName();
     }
 
     /**

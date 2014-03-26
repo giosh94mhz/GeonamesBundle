@@ -129,7 +129,7 @@ class Admin2 extends ToponymProxy implements Admin2Interface
      */
     public function getName()
     {
-        return $this->name;
+        return $this->name ?: $this->toponym->getName();
     }
 
     /**
@@ -152,7 +152,7 @@ class Admin2 extends ToponymProxy implements Admin2Interface
      */
     public function getAsciiName()
     {
-        return $this->asciiName;
+        return $this->asciiName ?: $this->toponym->getAsciiName();
     }
 
     /**
