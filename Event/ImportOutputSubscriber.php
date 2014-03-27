@@ -11,6 +11,7 @@ use Giosh94mhz\GeonamesBundle\Model\Import\ImportStepBuilder;
 
 class ImportOutputSubscriber implements EventSubscriberInterface
 {
+    private $output;
 
     private $logger;
 
