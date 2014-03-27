@@ -3,12 +3,19 @@ namespace Giosh94mhz\GeonamesBundle\Tests\Repository;
 
 use Giosh94mhz\GeonamesBundle\Tests\OrmFunctionalTestCase;
 use Giosh94mhz\GeonamesBundle\Tests\Fixtures\BaseFixture;
+use Doctrine\Common\Collections\Criteria;
 
 class ToponymRepositoryTest extends OrmFunctionalTestCase
 {
     private $repository;
 
-    public function repositoryProvider()
+    protected function loadFixtures()
+    {
+        $fixtures = new BaseFixture();
+        $fixtures->load($this->_em);
+    }
+
+    public function providerFindByDistance()
     {
         return array(
             array('Giosh94mhzGeonamesBundle:Continent', 48.0, 9.0, 1000, 6255148),
@@ -19,14 +26,8 @@ class ToponymRepositoryTest extends OrmFunctionalTestCase
         );
     }
 
-    protected function loadFixtures()
-    {
-        $fixtures = new BaseFixture();
-        $fixtures->load($this->_em);
-    }
-
     /**
-     * @dataProvider repositoryProvider
+     * @dataProvider providerFindByDistance
      */
     public function testFindByDistance($entity, $latitude, $longitude, $distanceInKm, $id)
     {
@@ -36,6 +37,37 @@ class ToponymRepositoryTest extends OrmFunctionalTestCase
         $repo = $this->_em->getRepository($entity);
 
         $results = $repo->findByDistance($latitude, $longitude, $distanceInKm, 1, 0);
+
+        $this->assertNotEmpty($results);
+
+        $toponym = $results[0];
+
+        $this->assertInstanceOf('Giosh94mhz\GeonamesBundle\Model\Toponym', $toponym);
+
+        $this->assertEquals($id, $toponym->getId());
+    }
+
+    public function providerFindPlacesByDistance()
+    {
+        return array(
+            // find Campione d'Italia
+            array('Giosh94mhzGeonamesBundle:Toponym', 45.96808, 8.97103, 10, 'IT', 3181006),
+            // find Lugano, not Campione d'Italia
+            array('Giosh94mhzGeonamesBundle:Toponym', 45.96808, 8.97103, 10, 'CH', 2659836)
+        );
+    }
+
+    /**
+     * @dataProvider providerFindPlacesByDistance
+     */
+    public function testFindPlacesByDistance($entity, $latitude, $longitude, $distanceInKm, $country, $id)
+    {
+        $this->loadFixtures();
+
+        /* @var $repo \Giosh94mhz\GeonamesBundle\Model\Repository\ToponymRepository */
+        $repo = $this->_em->getRepository($entity);
+
+        $results = $repo->findPlacesByDistance($latitude, $longitude, $distanceInKm, $country);
 
         $this->assertNotEmpty($results);
 

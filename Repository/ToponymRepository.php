@@ -10,6 +10,32 @@ class ToponymRepository extends EntityRepository implements ToponymRepositoryInt
 {
     public function findByDistance($latitude, $longitude, $distanceInKm, $limit = null, $offset = null)
     {
+        $qb = $this->createQueryBuilderForDistance($latitude, $longitude, $distanceInKm, $limit, $offset);
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function findPlacesByDistance($latitude, $longitude, $distanceInKm, $country = null, $limit = null, $offset = null)
+    {
+        $qb = $this->createQueryBuilderForDistance($latitude, $longitude, $distanceInKm, $limit, $offset);
+        $qb
+            ->innerJoin('toponym.feature', 'feature')
+            ->andWhere('feature.class = \'P\'')
+            ->andWhere('feature.code LIKE \'PPL%\'')
+        ;
+
+        if ($country !== null) {
+            $qb
+                ->andWhere('toponym.countryCode = :countryCode')
+                ->setParameter('countryCode', $country)
+            ;
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    private function createQueryBuilderForDistance($latitude, $longitude, $distanceInKm, $limit, $offset)
+    {
         /*
         // this cannot be used since there is no way to express "HIDDEN distance"
         $hiddenDistance = new Func('GEO_DISTANCE', array(
@@ -78,7 +104,7 @@ class ToponymRepository extends EntityRepository implements ToponymRepositoryInt
                 ))))
         ;
 
-        return $qb->getQuery()->execute();
+        return $qb;
     }
 
     protected function createToponymQueryBuilder(array $extraSelects = array())
