@@ -103,18 +103,12 @@ DQL;
         if (empty($data))
             throw new NoResultException();
 
-        $backupMaxResults = $this->maxResults;
-        $this->maxResults = 1;
-
-        try {
-            $result = $this->getReversedData(array($data[0]['latitude'], $data[0]['longitude']));
-
-        } catch (\Exception $e) {
-            $this->maxResults = $backupMaxResults;
-            throw $e;
-        }
-
-        $this->maxResults = $backupMaxResults;
+        $result = $this->getReversedGeocoding(
+            $data[0]['latitude'],
+            $data[0]['longitude'],
+            isset($data[0]['countryCode']) ? $data[0]['countryCode'] : null,
+            1
+        );
 
         return $result;
     }
@@ -124,10 +118,17 @@ DQL;
      */
     public function getReversedData(array $coordinates)
     {
+        return $this->getReversedGeocoding($coordinates[0], $coordinates[1]);
+    }
+
+    private function getReversedGeocoding($latitude, $longitude, $countryCode = null,  $maxResults = null)
+    {
         /* @var $repo \Giosh94mhz\GeonamesBundle\Model\Repository\ToponymRepository */
         $repo = $this->om->getRepository('Giosh94mhzGeonamesBundle:Toponym');
 
-        $toponyms = $repo->findByDistance($coordinates[0], $coordinates[1], 10, $this->maxResults);
+        $maxResults = $maxResults ?: $this->maxResults;
+
+        $toponyms = $repo->findPlacesByDistance($latitude, $longitude, 10, $countryCode, $maxResults);
         if (empty($toponyms))
             throw new NoResultException();
 

@@ -93,6 +93,33 @@ class PersistentGeonamesProviderTest extends OrmFunctionalTestCase
         $this->assertProviderResult(3173435, 'Milano', $result[0]);
     }
 
+    public function testGeocodingByIpWithIpProviderWhichReturnCountryCode()
+    {
+        $this->loadFixtures();
+
+        // [45.96808,8.97103] is Campione d'Italia but the nearest CH city is Lugano
+        $ipProvider = $this->getMockBuilder('Geocoder\Provider\ProviderInterface')->getMock();
+        $ipProvider
+            ->expects($this->once())
+            ->method('getGeocodedData')
+            ->will(
+                $this->returnValue(array(
+                    array('latitude' => 45.96808, 'longitude' => 8.97103, 'countryCode' => 'CH')
+                ))
+            )
+        ;
+
+        $this->provider->setIpProvider($ipProvider);
+
+        $this->assertSame($ipProvider, $this->provider->getIpProvider());
+
+        $result = $this->provider->getGeocodedData('127.0.0.1');
+
+        $this->assertNotEmpty($result);
+
+        $this->assertProviderResult(2659836, 'Lugano', $result[0]);
+    }
+
     protected function assertProviderResult($expectedId, $expectedToponymName, $actual)
     {
         $this->assertArrayHasKey('toponym', $actual);
