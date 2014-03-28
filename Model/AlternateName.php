@@ -39,7 +39,7 @@ interface AlternateName
      * Get isPreferredName
      *
      * @return boolean
-    */
+     */
     public function isPreferredName();
 
     /**
@@ -53,20 +53,20 @@ interface AlternateName
      * Get isColloquial
      *
      * @return boolean
-    */
+     */
     public function isColloquial();
 
     /**
      * Get isHistoric
      *
      * @return boolean
-    */
+     */
     public function isHistoric();
 
     /**
      * Get toponym
      *
      * @return Toponym
-    */
+     */
     public function getToponym();
 }

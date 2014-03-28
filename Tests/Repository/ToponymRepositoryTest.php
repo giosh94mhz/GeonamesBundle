@@ -3,7 +3,6 @@ namespace Giosh94mhz\GeonamesBundle\Tests\Repository;
 
 use Giosh94mhz\GeonamesBundle\Tests\OrmFunctionalTestCase;
 use Giosh94mhz\GeonamesBundle\Tests\Fixtures\BaseFixture;
-use Doctrine\Common\Collections\Criteria;
 
 class ToponymRepositoryTest extends OrmFunctionalTestCase
 {
