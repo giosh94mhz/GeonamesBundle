@@ -3,7 +3,6 @@
 namespace Giosh94mhz\GeonamesBundle\Entity;
 
 use Giosh94mhz\GeonamesBundle\Model\Toponym as ToponymInterface;
-use Giosh94mhz\GeonamesBundle\Model\AlternateName;
 
 /**
  * Toponym
