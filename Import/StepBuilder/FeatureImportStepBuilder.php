@@ -18,6 +18,7 @@ class FeatureImportStepBuilder extends AbstractImportStepBuilder
     private $locale;
 
     private $file;
+
     /**
      * @var \Doctrine\Common\Persistence\ObjectRepository
      */

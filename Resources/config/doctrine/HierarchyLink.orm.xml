@@ -6,18 +6,18 @@
     <id name="child" association-key="true"/>
 
     <many-to-one field="parent" target-entity="Toponym" inversed-by="children">
-       <cascade>
-         <cascade-persist />
-         <cascade-detach />
-       </cascade>
+      <!-- FIXME: detach cascade is REQUIRED on import (for performance), but is not required for production use -->
+      <cascade>
+        <cascade-detach />
+      </cascade>
        <join-columns>
         <join-column name="parent_id" referenced-column-name="geoname_id" nullable="false"/>
       </join-columns>
     </many-to-one>
 
     <many-to-one field="child" target-entity="Toponym" inversed-by="parents">
+      <!-- FIXME: detach cascade is REQUIRED on import (for performance), but is not required for production use -->
       <cascade>
-        <cascade-persist />
         <cascade-detach />
       </cascade>
       <join-columns>

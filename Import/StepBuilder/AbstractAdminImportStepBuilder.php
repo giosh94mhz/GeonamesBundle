@@ -52,16 +52,22 @@ abstract class AbstractAdminImportStepBuilder extends AbstractImportStepBuilder
         if (! ($toponym = $this->toponymRepository->find($value[3])))
             throw new MissingToponymException("Skipped '{$value[0]}' due to missing toponym '{$value[3]}'");
 
-        $codes = explode('.', $value[0]);
+        try {
+            $codes = explode('.', $value[0]);
 
-        if (!empty($this->countryCodes) && !in_array($codes[0], $this->countryCodes))
-            throw new SkipImportException("Skipped admin level '{$value[0]}' because country '{$codes[0]}' is not enabled");
+            if (!empty($this->countryCodes) && !in_array($codes[0], $this->countryCodes))
+                throw new SkipImportException("Skipped admin level '{$value[0]}' because country '{$codes[0]}' is not enabled");
 
-        $value = array_merge($value, $codes);
+            $value = array_merge($value, $codes);
 
-        $admin = $this->buildAdminEntity($value, $toponym);
+            $admin = $this->buildAdminEntity($value, $toponym);
 
-        return $admin;
+            return $admin;
+
+        } catch (\Exception $e) {
+            $this->om->detach($toponym);
+            throw $e;
+        }
     }
 
     abstract protected function buildAdminEntity($value, Toponym $toponym);

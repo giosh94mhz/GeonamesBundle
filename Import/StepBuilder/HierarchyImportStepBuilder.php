@@ -55,19 +55,30 @@ class HierarchyImportStepBuilder extends AbstractImportStepBuilder
 
     public function buildEntity($value)
     {
-        /* @var $parent \Giosh94mhz\GeonamesBundle\Entity\Toponym */
-        $parent = $this->toponymRepository->find($value[0]);
+        $parent = null;
+        $child = null;
+        try {
+            /* @var $parent \Giosh94mhz\GeonamesBundle\Entity\Toponym */
+            $parent = $this->toponymRepository->find($value[0]);
 
-        /* @var $child \Giosh94mhz\GeonamesBundle\Entity\Toponym */
-        $child = $this->toponymRepository->find($value[1]);
+            /* @var $child \Giosh94mhz\GeonamesBundle\Entity\Toponym */
+            $child = $this->toponymRepository->find($value[1]);
 
-        if (! $parent || ! $child)
-            throw new MissingToponymException("HierarchyLink not imported due to missing toponym '$value[0]=>$value[1]'");
+            if (! $parent || ! $child)
+                throw new MissingToponymException("HierarchyLink not imported due to missing toponym '$value[0]=>$value[1]'");
 
-        /* @var $link \Giosh94mhz\GeonamesBundle\Entity\HierarchyLink */
-        $link = $this->repository->find(array('parent' => $parent->getId(), 'child' => $child->getId())) ?: new HierarchyLink($parent, $child);
-        $link->setType($value[2]);
+            /* @var $link \Giosh94mhz\GeonamesBundle\Entity\HierarchyLink */
+            $link = $this->repository->find(array('parent' => $parent->getId(), 'child' => $child->getId())) ?: new HierarchyLink($parent, $child);
+            $link->setType($value[2]);
 
-        return $link;
+            return $link;
+
+        } catch (\Exception $e) {
+            if ($parent !== null)
+                $this->om->detach($parent);
+            if ($child !== null)
+                $this->om->detach($child);
+            throw $e;
+        }
     }
 }
