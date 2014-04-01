@@ -6,17 +6,13 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportAdmin2Command extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:admin2')
-             ->setDescription('Import second administrative (for the enabled countries)')
-             ->configureCommon();
+        parent::__construct('geonames:import:admin2', 'Import second administrative (for the enabled countries)');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)
     {
-        $director
-//          ->addStep($this->getContainer()->get('giosh94mhz_geonames.import.step.toponym'))
-            ->addStep($this->getContainer()->get('giosh94mhz_geonames.import.step.admin2'));
+        $director->addStep($this->getContainer()->get('giosh94mhz_geonames.import.step.admin2'));
     }
 }

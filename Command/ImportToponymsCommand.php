@@ -6,11 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportToponymsCommand extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:toponyms')
-             ->setDescription('Import toponyms (continents, countries, cities, lakes, ...)')
-             ->configureCommon();
+        parent::__construct('geonames:import:toponyms', 'Import toponyms (continents, countries, cities, lakes, ...)');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)

@@ -6,11 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportFeaturesCommand extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:features')
-             ->setDescription('Import features')
-             ->configureCommon();
+        parent::__construct('geonames:import:features', 'Import features');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)

@@ -6,16 +6,13 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportContinentsCommand extends AbstractImportCommand
 {
-
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:continents')
-             ->setDescription('Import continents information')
-             ->configureCommon();
+        parent::__construct('geonames:import:continents', 'Import continents information');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)
     {
-        $director->addStep( $this->getContainer()->get('giosh94mhz_geonames.import.step.continent') );
+        $director->addStep($this->getContainer()->get('giosh94mhz_geonames.import.step.continent'));
     }
 }

@@ -6,11 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportCountriesCommand extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:countries')
-             ->setDescription('Import countries information')
-             ->configureCommon();
+        parent::__construct('geonames:import:countries', 'Import countries information');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)

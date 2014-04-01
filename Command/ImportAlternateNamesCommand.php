@@ -6,11 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportAlternateNamesCommand extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:alternate-names')
-             ->setDescription('Import alternate names for toponyms')
-             ->configureCommon();
+        parent::__construct('geonames:import:alternate-names', 'Import alternate names for toponyms');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)

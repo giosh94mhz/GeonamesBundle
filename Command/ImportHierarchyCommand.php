@@ -9,11 +9,9 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 class ImportHierarchyCommand extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:hierarchy')
-        ->setDescription('Import toponym hierarchy tree')
-        ->configureCommon();
+        parent::__construct('geonames:import:hierarchy', 'Import toponym hierarchy tree');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)

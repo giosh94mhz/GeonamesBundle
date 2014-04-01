@@ -6,11 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class ImportLanguagesCommand extends AbstractImportCommand
 {
-    protected function configure()
+    public function __construct()
     {
-        $this->setName('geonames:import:languages')
-             ->setDescription('Import ISO639 languages')
-             ->configureCommon();
+        parent::__construct('geonames:import:languages', 'Import ISO639 languages');
     }
 
     protected function addSteps(ImportDirector $director, InputInterface $input)

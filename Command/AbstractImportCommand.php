@@ -10,17 +10,24 @@ use Giosh94mhz\GeonamesBundle\Model\Import\ImportDirector;
 
 abstract class AbstractImportCommand extends ContainerAwareCommand
 {
-    private $downloadDir;
+    /* (non-PHPdoc)
+     * @see \Symfony\Component\Console\Command\Command::__construct()
+     */
+    public function __construct($name, $description = null) {
+        parent::__construct($name);
+        if ($description)
+            $this->setDescription($description);
+    }
 
-    protected function configureCommon()
+    protected function configure()
     {
         $this
-        ->addOption(
-            'fetch-only',
-            null,
-            InputOption::VALUE_NONE,
-            'Download required files without importing'
-        )
+            ->addOption(
+                'fetch-only',
+                null,
+                InputOption::VALUE_NONE,
+                'Download required files without importing'
+            )
         ;
 
         return $this;
