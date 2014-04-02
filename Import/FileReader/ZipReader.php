@@ -47,6 +47,6 @@ class ZipReader implements FileReader
 
     public function getIterator()
     {
-        return new CsvIterator($this->stream, "\t");
+        return new CsvIterator($this->stream, "\t", null);
     }
 }

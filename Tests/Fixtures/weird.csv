@@ -1,0 +1,7 @@
+
+# this is a super weird TSV to test CsvIterator escaping and line skip
+# should contain only 1 line with 8 field
+
+"no quote",still no quote,\"weird fgetcsv quote\",\\weird fgetcsv quote\\,"""yes quote""","Some
+cool
+newline","comma,comma",UNICODE: ❤€₪₹😁

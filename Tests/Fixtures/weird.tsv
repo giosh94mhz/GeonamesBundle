@@ -1,0 +1,4 @@
+# this is a super weird TSV to test CsvIterator, which include some freaky feature from geonames dump
+# should contain only 1 line with 8 field
+
+"quoted"	Mohḏ-yāṟkhēl	Mukhammed""yarkheyl'	Mukhammed””yarkheyl’

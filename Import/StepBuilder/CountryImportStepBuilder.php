@@ -27,6 +27,8 @@ class CountryImportStepBuilder extends AbstractImportStepBuilder
      */
     private $toponymRepository;
 
+    private $file;
+
     public function __construct(ObjectManager $om)
     {
         $this->om = $om;
