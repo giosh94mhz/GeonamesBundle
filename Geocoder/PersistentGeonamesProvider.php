@@ -100,7 +100,7 @@ DQL;
         }
 
         $data = $this->ipProvider->getGeocodedData($address);
-        if (empty($data))
+        if (empty($data) || ! isset($data[0]['latitude']) || ! isset($data[0]['longitude']))
             throw new NoResultException();
 
         $result = $this->getReversedGeocoding(
