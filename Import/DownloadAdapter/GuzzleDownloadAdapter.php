@@ -30,16 +30,6 @@ class GuzzleDownloadAdapter extends AbstractDownloadAdapter
 
         if (! $client) {
             $this->client = new Client();
-
-            $cache = new CachePlugin(array(
-                'storage' => new DefaultCacheStorage(
-                    new DoctrineCacheAdapter(
-                        new FilesystemCache(sys_get_temp_dir())
-                    )
-                )
-            ));
-
-            $this->client->addSubscriber($cache);
         } else {
             $this->client = $client;
         }
