@@ -141,7 +141,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('search_distances')
                             ->info('Progressive max distances to use when reverse geocoding')
                             ->prototype('scalar')->end()
-                            ->defaultValue(PersistentGeonamesProvider::DEFAULT_SEARCH_DISTANCES)
+                            ->defaultValue(array(8, 16, 64))
                         ->end()
                     ->end()
                 ->end()
