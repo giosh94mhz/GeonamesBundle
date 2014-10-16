@@ -178,10 +178,16 @@ class Giosh94mhzGeonamesExtension extends Extension
         );
 
         if(! $config['geocoder']['enabled'])
-
             return;
 
         $loader->load('geocoder.xml');
+
+        sort($config['geocoder']['search_distances'], SORT_NUMERIC);
+        $provider = $container->getDefinition('giosh94mhz_geonames.geocoder.persistent_geonames_provider');
+        $provider->addMethodCall('setSearchDistances', array(
+            $config['geocoder']['search_distances']
+
+        ));
 
         $container->setParameter(
             'giosh94mhz_geonames.geocoder.ip_provider',

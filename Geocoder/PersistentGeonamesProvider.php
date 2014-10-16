@@ -17,6 +17,8 @@ class PersistentGeonamesProvider implements LocaleAwareProviderInterface
 
     protected $maxResults;
 
+    protected $searchDistances;
+
     protected $ipProvider;
 
     public function __construct(ObjectManager $om, $locale = null)
@@ -24,6 +26,7 @@ class PersistentGeonamesProvider implements LocaleAwareProviderInterface
         $this->om = $om;
         $this->locale = $locale ?: 'en';
         $this->maxResults = Geocoder::MAX_RESULTS;
+        $this->searchDistances = array(8, 16, 64);
     }
 
     /**
@@ -126,11 +129,15 @@ DQL;
         /* @var $repo \Giosh94mhz\GeonamesBundle\Model\Repository\ToponymRepository */
         $repo = $this->om->getRepository('Giosh94mhzGeonamesBundle:Toponym');
 
-        $maxResults = $maxResults ?: $this->maxResults;
+        $maxResults = intval($maxResults) ?: $this->maxResults;
 
-        $toponyms = $repo->findPlacesByDistance($latitude, $longitude, 10, $countryCode, $maxResults);
+        foreach ($this->searchDistances as $distance) {
+            $toponyms = $repo->findPlacesByDistance($latitude, $longitude, $distance, $countryCode, $maxResults);
+            if (count($toponyms) === $maxResults)
+                break;
+        }
         if (empty($toponyms))
-            throw new NoResultException();
+            throw new NoResultException("No toponym found within ".end($this->searchDistances). " kilometers");
 
         return $this->toponymsToResultArray($toponyms);
     }
@@ -138,6 +145,18 @@ DQL;
     public function getIpProvider()
     {
         return $this->ipProvider;
+    }
+
+    public function getSearchDistances()
+    {
+        return $this->searchDistances;
+    }
+
+    public function setSearchDistances(array $searchDistances)
+    {
+        $this->searchDistances = $searchDistances;
+
+        return $this;
     }
 
     public function setIpProvider(ProviderInterface $ipProvider)

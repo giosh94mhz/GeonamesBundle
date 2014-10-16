@@ -4,6 +4,7 @@ namespace Giosh94mhz\GeonamesBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Giosh94mhz\GeonamesBundle\Geocoder\PersistentGeonamesProvider;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -136,6 +137,11 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('ip_provider')
                             ->info('Name of the Geocoder provider to use to resolve IP addresses')
                             ->defaultValue(false)
+                        ->end()
+                        ->arrayNode('search_distances')
+                            ->info('Progressive max distances to use when reverse geocoding')
+                            ->prototype('scalar')->end()
+                            ->defaultValue(PersistentGeonamesProvider::DEFAULT_SEARCH_DISTANCES)
                         ->end()
                     ->end()
                 ->end()
