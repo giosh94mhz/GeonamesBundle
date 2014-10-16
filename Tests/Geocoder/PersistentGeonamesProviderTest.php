@@ -148,7 +148,7 @@ class PersistentGeonamesProviderTest extends OrmFunctionalTestCase
         try {
             // must fail, since the nearest location is at ~8km
             $this->provider->getGeocodedData('127.0.0.1');
-            $this->assertTrue(false);
+            $this->fail("getGeocodedData must throw a NoResultException");
 
         } catch (NoResultException $e) {
             $this->assertSame("No toponym found within 7 kilometers", $e->getMessage());
