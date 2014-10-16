@@ -42,7 +42,7 @@ class Giosh94mhzGeonamesExtension extends Extension
         $loader->load('doctrine.xml');
     }
 
-    private function setImportConfig(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    private function setImportConfig(array $config, ContainerBuilder $container)
     {
         /*
          * DOWNLOAD
