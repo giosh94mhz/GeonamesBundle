@@ -2,9 +2,60 @@
 namespace Giosh94mhz\GeonamesBundle\Tests\Import\DownloadAdapter;
 
 use Giosh94mhz\GeonamesBundle\Import\DownloadAdapter\GuzzleDownloadAdapter;
-use Guzzle\Http\Client;
-use Guzzle\Plugin\Mock\MockPlugin;
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Client;
+use GuzzleHttp\Subscriber\Mock as BaseMock;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Event\BeforeEvent;
+use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Stream\Stream;
+
+class MockBeforeEvent extends BeforeEvent
+{
+    private $event;
+
+    /**
+     * @var ResponseInterface
+     */
+    public $response;
+
+    public function __construct(BeforeEvent $event)
+    {
+        $this->event = $event;
+    }
+
+    public function getClient()
+    {
+        return $this->event->getClient();
+    }
+
+    public function getRequest()
+    {
+        return $this->event->getRequest();
+    }
+
+    protected function getTransaction()
+    {
+        return $this->event->getTransaction();
+    }
+
+    public function intercept(ResponseInterface $response)
+    {
+        $this->response = $response;
+        $this->event->intercept($response);
+    }
+}
+
+class Mock extends BaseMock
+{
+    public function onBefore(BeforeEvent $event) {
+        $mock = new MockBeforeEvent($event);
+        parent::onBefore($mock);
+
+        $save_to = $event->getRequest()->getConfig()->get('save_to');
+        if (! empty($save_to))
+            file_put_contents($save_to, $mock->response->getBody());
+    }
+}
 
 class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +66,7 @@ class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
      */
     protected $download;
 
-    protected $mockPlugin;
+    protected $mock;
 
     public static function setUpBeforeClass()
     {
@@ -34,8 +85,8 @@ class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client();
 
-        $this->mockPlugin = new MockPlugin();
-        $client->addSubscriber($this->mockPlugin);
+        $this->mock = new Mock(array(), true);
+        $client->getEmitter()->attach($this->mock);
 
         $this->download = new GuzzleDownloadAdapter($client);
         $this->download->setDirectory(self::$directory);
@@ -43,8 +94,10 @@ class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        $this->download->clear();
-        $this->download = null;
+        if ($this->download) {
+            $this->download->clear();
+            $this->download = null;
+        }
     }
 
     public function testDownload()
@@ -53,27 +106,17 @@ class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
         $textLength = strlen($text);
 
         // HEAD Request
-        $this->mockPlugin->addResponse(new Response(200, array('Content-Length' => $textLength)));
-        $this->mockPlugin->addResponse(new Response(200, array('Content-Length' => $textLength, $text)));
+        $this->mock->addResponse(new Response(200, array('Content-Length' => $textLength)));
+        $this->mock->addResponse(new Response(200, array('Content-Length' => $textLength), Stream::factory($text)));
 
         $filename = $this->download->add('http://www.example.com/' . mt_rand(10000, 99999));
 
-        $outTotal = 0;
-        $outPartial = -1;
-        $this->download->setProgressFunction(function ($total, $partial) use (&$outTotal, &$outPartial) {
-            $outTotal = $total;
-            if ($partial > 0)
-                $outPartial = $partial;
-        });
-
+        $this->download->setProgressFunction(function ($total, $partial) {});
         $this->download->download();
 
         $size = @filesize($filename);
+        $this->assertEquals($textLength, $size);
 
-        // $this->assertEquals($textLength, $size); // MockPlugin don't support save_to apparently
-        $this->assertNotSame(false, $size);
-
-        // $this->assertEquals($outTotal, $outPartial); // MockPlugin don't call curl, so no progress
-        return array( $filename, $size );
+        return array($filename, $textLength);
     }
 }

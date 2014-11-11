@@ -1,12 +1,13 @@
 <?php
 namespace Giosh94mhz\GeonamesBundle\Import\DownloadAdapter;
 
-use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Client;
-use Guzzle\Plugin\Cache\CachePlugin;
-use Guzzle\Plugin\Cache\DefaultCacheStorage;
-use Guzzle\Cache\DoctrineCacheAdapter;
 use Doctrine\Common\Cache\FilesystemCache;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Event\CompleteEvent;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Event\ProgressEvent;
+use GuzzleHttp\Event\ErrorEvent;
 
 class GuzzleDownloadAdapter extends AbstractDownloadAdapter
 {
@@ -53,17 +54,18 @@ class GuzzleDownloadAdapter extends AbstractDownloadAdapter
             foreach ($this->requests as $request) {
                 $requests[] = $this->client->createRequest(
                     'HEAD',
-                    $request['url'],
-                    array(),
-                    null,
-                    array()
+                    $request['url']
                 );
             }
 
             $contentLength = 0;
-            foreach ($this->client->send($requests) as $response) {
-                $contentLength += $response->getContentLength();
-            }
+            $pool = new Pool($this->client, $requests, [
+                'complete' => function (CompleteEvent $event) use (&$contentLength) {
+                    $contentLength += $event->getRequest()->getHeader('Content-Length');
+                }
+            ]);
+            $pool->wait();
+
             $this->downloadsSize = $contentLength;
         }
 
@@ -84,20 +86,19 @@ class GuzzleDownloadAdapter extends AbstractDownloadAdapter
             $requests[] = $request = $this->client->createRequest(
                 'GET',
                 $r['url'],
-                array(),
-                null,
                 array('save_to' => $r['file'])
             );
+
             if ($progressFunctions !== null) {
-                // Guzzle progress is too complex for my needs
-                $request->getCurlOptions()
-                    ->add(CURLOPT_NOPROGRESS, false)
-                    ->add(CURLOPT_PROGRESSFUNCTION, $progressFunctions[$i])
-                ;
+                $f = $progressFunctions[$i];
+                $request->getEmitter()->on('progress', function(ProgressEvent $event) use ($f) {
+                    call_user_func($f, $event->downloaded, $event->downloadSize);
+                });
             }
         }
 
-        $this->client->send($requests);
+        $pool = new Pool($this->client, $requests);
+        $pool->wait();
     }
 
     public function clear()
