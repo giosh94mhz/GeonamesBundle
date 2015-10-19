@@ -33,7 +33,7 @@ class MockBeforeEvent extends BeforeEvent
         return $this->event->getRequest();
     }
 
-    protected function getTransaction()
+    public function getTransaction()
     {
         return $this->event->getTransaction();
     }
