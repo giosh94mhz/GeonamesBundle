@@ -57,6 +57,9 @@ class Mock extends BaseMock
     }
 }
 
+/**
+ * @requires PHP 5.4.0
+ */
 class GuzzleDownloadAdapterTest extends \PHPUnit_Framework_TestCase
 {
     protected static $directory;
