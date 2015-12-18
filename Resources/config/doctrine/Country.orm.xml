@@ -2,7 +2,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="Giosh94mhz\GeonamesBundle\Entity\Country" table="country" repository-class="Giosh94mhz\GeonamesBundle\Repository\ToponymProxyRepository">
     <id name="toponym" association-key="true"/>
-    <one-to-one field="toponym" target-entity="Toponym" fetch="EAGER">
+    <one-to-one field="toponym" target-entity="Toponym" fetch="LAZY">
       <cascade>
         <cascade-all/>
       </cascade>
