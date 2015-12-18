@@ -31,7 +31,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
         );
 
         $q = $this->_em->createQuery(
-            'SELECT STD_GEO_DISTANCE(1.1, 1.2, 2.1, 2.2) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT STD_GEO_DISTANCE(1.1, 1.2, 2.1, 2.2) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT 12742.%d * (PI() / 2 - ACOS(SQRT((SIN((1.1 - 2.1)  * PI() / 360) * SIN((1.1 - 2.1)  * PI() / 360)) + (COS(1.1 * PI() / 180) * COS(2.1 * PI() / 180) * SIN((1.2 - 2.2)  * PI() / 360) * SIN((1.2 - 2.2)  * PI() / 360))))) AS %W FROM geoname %W LIMIT 1';
@@ -46,7 +46,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
         );
 
         $q = $this->_em->createQuery(
-            'SELECT SQLITE_GEO_DISTANCE(1.1, 1.2, 2.1, 2.2) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT SQLITE_GEO_DISTANCE(1.1, 1.2, 2.1, 2.2) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT 111.%d * SQRT(((1.1 - 2.1) * (1.1 - 2.1) + (1.2 - 2.2) * (1.2 - 2.2))) AS %W FROM geoname %W LIMIT 1';
@@ -61,7 +61,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
         );
 
         $q = $this->_em->createQuery(
-            'SELECT STD_GEO_DISTANCE_WITHIN(1.1, 1.2, 2.1, 2.2, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT STD_GEO_DISTANCE_WITHIN(1.1, 1.2, 2.1, 2.2, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT (12742.000000 * (PI() / 2 - ACOS(SQRT((SIN((1.1 - 2.1)  * PI() / 360) * SIN((1.1 - 2.1)  * PI() / 360)) + (COS(1.1 * PI() / 180) * COS(2.1 * PI() / 180) * SIN((1.2 - 2.2)  * PI() / 360) * SIN((1.2 - 2.2)  * PI() / 360)))))) <= 3.0 AS %W FROM geoname %W LIMIT 1';
@@ -76,7 +76,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
         );
 
         $q = $this->_em->createQuery(
-            'SELECT SQLITE_GEO_DISTANCE_WITHIN(1.1, 1.2, 2.1, 2.2, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT SQLITE_GEO_DISTANCE_WITHIN(1.1, 1.2, 2.1, 2.2, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT (111.%d * SQRT(((1.1 - 2.1) * (1.1 - 2.1) + (1.2 - 2.2) * (1.2 - 2.2)))) <= 3.0 AS %W FROM geoname %W LIMIT 1';
@@ -86,7 +86,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
     public function testLatitudeWithin()
     {
         $q = $this->_em->createQuery(
-            'SELECT LATITUDE_WITHIN(1.1, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT LATITUDE_WITHIN(1.1, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT 1.1 BETWEEN 2.1 - 3.0 / 111.%d AND 2.1 + 3.0 / 111.%d AS %W FROM geoname %W LIMIT 1';
@@ -96,7 +96,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
     public function testLongitudeWithin()
     {
         $q = $this->_em->createQuery(
-            'SELECT LONGITUDE_WITHIN(1.1, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT LONGITUDE_WITHIN(1.1, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT 1.1 BETWEEN 2.1 - 3.0 / 111.%d AND 2.1 + 3.0 / 111.%d AS %W FROM geoname %W LIMIT 1';
@@ -111,7 +111,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
         );
 
         $q = $this->_em->createQuery(
-            'SELECT STD_LONGITUDE_WITHIN(1.1, 1.2, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT STD_LONGITUDE_WITHIN(1.1, 1.2, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT 1.1 BETWEEN 2.1 - 3.0 / ABS(COS(1.2) * 111.%d) AND 2.1 + 3.0 / ABS(COS(1.2) * 111.%d) AS %W FROM geoname %W LIMIT 1';
@@ -126,7 +126,7 @@ class FunctionNodeTest extends OrmFunctionalTestCase
         );
 
         $q = $this->_em->createQuery(
-            'SELECT SQLITE_LONGITUDE_WITHIN(1.1, 1.2, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym'
+            'SELECT SQLITE_LONGITUDE_WITHIN(1.1, 1.2, 2.1, 3.0) AS d FROM Giosh94mhzGeonamesBundle:Toponym t'
         )->setMaxResults(1);
 
         $expected = 'SELECT 1.1 BETWEEN 2.1 - 3.0 / 111.%d AND 2.1 + 3.0 / 111.%d AS %W FROM geoname %W LIMIT 1';
